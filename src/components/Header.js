@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Router, Route, IndexRoute, useRouterHistory } from 'react-router';
-import { createHashHistory } from 'history';
+import {Button, Container, Image, Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {LinkContainer} from 'react-router-bootstrap';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./headers.css";
-import {Button, Container, Form, FormControl, Image, Nav, Navbar, NavDropdown} from "react-bootstrap";
 
 class Header extends Component {
     // constructor(props) {
@@ -19,24 +18,34 @@ class Header extends Component {
         if (!this.props.logged_in) {
             header = (
                 <Navbar bg="dark" variant="dark" expand="lg" sticky={"top"}>
-                    <Navbar.Brand href={"/"}>WinDrop</Navbar.Brand>
+                    <LinkContainer to={"/"}>
+                        <Navbar.Brand>WinDrop</Navbar.Brand>
+                    </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav activeKey={"home"} className="mr-auto">
-                            <Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>
-                            <Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>
-                            <Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>About</Nav.Link>
-                            {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">*/}
-                            {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Divider />*/}
-                            {/*    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
-                            {/*</NavDropdown>*/}
+                        <Nav className="mr-auto">
+                            <LinkContainer to={"/"}>
+                                {/*<Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>*/}
+                                <Nav.Link eventKey={"home"} href={"/"}>Home</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to={"/faq"}>
+                                {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
+                                <Nav.Link eventKey={"faq"} href={"/faq"}>FAQs</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to={"/about"}>
+                                {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>About</Nav.Link>*/}
+                                <Nav.Link eventKey={"about"}>About</Nav.Link>
+                            </LinkContainer>
                         </Nav>
                         <Nav fill={true} className="justify-content-end">
-                            <Button variant={"outline-primary"} href={"#"}>Login</Button>
-                            <Button variant={"primary"} href={"#"}>Sign-up</Button>
+                            <LinkContainer to={"/login"}>
+                                {/*<Button variant={"outline-primary"} onClick={()=>this.props.onReq("login")}>Login</Button>*/}
+                                <Button variant={"outline-primary"}>Login</Button>
+                            </LinkContainer>
+                            <LinkContainer to={"/sign_up"}>
+                                {/*<Button variant={"primary"} onClick={()=>this.props.onReq("sign_up")}>Sign-up</Button>*/}
+                                <Button variant={"primary"}>Sign-up</Button>
+                            </LinkContainer>
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -46,20 +55,24 @@ class Header extends Component {
             header = (
                 <Navbar bg="dark" variant="dark" expand="lg" sticky={"top"}>
                     <Container fluid={true}>
-                        <Navbar.Brand onSelect={()=>this.props.onReq("home")}>WinDrop</Navbar.Brand>
+                        <LinkContainer to={"/"}>
+                            <Navbar.Brand>WinDrop</Navbar.Brand>
+                        </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav defaultActiveKey={"home"} className="mr-auto">
-                                <Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>
-                                <Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>
-                                <Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>About</Nav.Link>
-                                {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">*/}
-                                {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
-                                {/*    <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>*/}
-                                {/*    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>*/}
-                                {/*    <NavDropdown.Divider />*/}
-                                {/*    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
-                                {/*</NavDropdown>*/}
+                                <LinkContainer to={"/"}>
+                                    {/*<Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>*/}
+                                    <Nav.Link eventKey={"home"} href={"/"}>Home</Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to={"/faq"}>
+                                    {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
+                                    <Nav.Link eventKey={"faq"} href={"/faq"}>FAQs</Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to={"/about"}>
+                                    {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>About</Nav.Link>*/}
+                                    <Nav.Link eventKey={"about"}>About</Nav.Link>
+                                </LinkContainer>
                             </Nav>
                             <Nav fill={true} className={"justify-content-end"}>
                                 <NavDropdown eventKey={1} id="basic-nav-dropdown" drop={"down"}
