@@ -8,6 +8,7 @@ class Login extends Component {
     render() {
         return(
             <Form className={"form-global"}>
+                <h3>Login</h3>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control type="email" placeholder="Enter email" />

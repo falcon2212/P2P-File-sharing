@@ -34,23 +34,23 @@ class App extends Component {
                 <Switch>
                     <Route exact path={"/"}>
                         {/*<Header logged_in={this.state.logged_in} onReq={(mc) => this.handleReq(this.state.logged_in,mc)}/>*/}
-                        <Header logged_in={this.state.logged_in}/>
+                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
                         <Middle middle_content={"home"}/>
                     </Route>
                     <Route path={"/about"}>
-                        <Header logged_in={this.state.logged_in}/>
+                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
                         <Middle middle_content={"about"}/>
                     </Route>
                     <Route path={"/faq"}>
-                        <Header logged_in={this.state.logged_in}/>
+                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
                         <Middle middle_content={"faq"}/>
                     </Route>
                     <Route path={"/login"}>
-                        <Header logged_in={this.state.logged_in}/>
+                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
                         <Middle middle_content={"login"} onReq={(ls) => this.handleReq(ls)}/>
                     </Route>
                     <Route path={"/sign_up"}>
-                        <Header logged_in={this.state.logged_in}/>
+                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
                         <Middle middle_content={"sign_up"}/>
                     </Route>
                 </Switch>

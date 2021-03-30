@@ -54,7 +54,7 @@ class Header extends Component {
         else{
             header = (
                 <Navbar bg="dark" variant="dark" expand="lg" sticky={"top"}>
-                    <Container fluid={true}>
+                    {/*<Container fluid={true}>*/}
                         <LinkContainer to={"/"}>
                             <Navbar.Brand>WinDrop</Navbar.Brand>
                         </LinkContainer>
@@ -81,13 +81,13 @@ class Header extends Component {
                                 }>
 
                                     <NavDropdown.Item eventKey={1.1} href="#profile">Profile</NavDropdown.Item>
-                                    <NavDropdown.Item eventKey={1.2}>
-                                        <i className="fa fa-sign-out"></i> Logout
+                                    <NavDropdown.Item eventKey={1.2} href={"/"} onClick={()=>this.props.onReq("false")}>
+                                        Logout
                                     </NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Navbar.Collapse>
-                    </Container>
+                    {/*</Container>*/}
                 </Navbar>
             );
         }
