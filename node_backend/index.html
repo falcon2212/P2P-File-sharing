@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            P2P File transfer
+        </title>
+        <link rel="stylesheet" href="./css/main.css" />
+    </head>
+    <body>
+        <h3>File Upload</h3>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+        <script src = "main.js"></script>
+
+        <div class="container-fluid" style="margin-top: 5em;">
+            <div class="container" id="members">
+                <h4 id="online">Users online (0) </h4>
+                <ul id="memberList"></ul>
+            </div>
+
+            <div class="container" id="connect" style="display:block">
+                <input type="file" id="file" class="form-control" ></input>
+                <button class="demo-chat-send btn btn-success" id="send" onclick="sendFile()">Send</button>
+                <ul id="downloadList"></ul>
+            </div>
+
+        </div>
+    </body>
+</html>
