@@ -17,12 +17,13 @@ class App extends Component {
         super(props);
         this.state = {
             logged_in: false,
+            login_credentials : {}
             // middle_content: "home"
         };
     }
 
-    handleReq(ls) {
-        this.setState({logged_in: ls});
+    handleReq(ls, lc) {
+        this.setState({logged_in: ls, login_credentials: lc});
         // this.render();
     }
 
@@ -34,23 +35,23 @@ class App extends Component {
                 <Switch>
                     <Route exact path={"/"}>
                         {/*<Header logged_in={this.state.logged_in} onReq={(mc) => this.handleReq(this.state.logged_in,mc)}/>*/}
-                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
+                        <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                         <Middle middle_content={"home"}/>
                     </Route>
                     <Route path={"/about"}>
-                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
+                        <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                         <Middle middle_content={"about"}/>
                     </Route>
                     <Route path={"/faq"}>
-                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
+                        <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                         <Middle middle_content={"faq"}/>
                     </Route>
                     <Route path={"/login"}>
-                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
-                        <Middle middle_content={"login"} onReq={(ls) => this.handleReq(ls)}/>
+                        <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
+                        <Middle middle_content={"login"} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                     </Route>
                     <Route path={"/sign_up"}>
-                        <Header logged_in={this.state.logged_in} onReq={(ls) => this.handleReq(ls)}/>
+                        <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                         <Middle middle_content={"sign_up"}/>
                     </Route>
                 </Switch>

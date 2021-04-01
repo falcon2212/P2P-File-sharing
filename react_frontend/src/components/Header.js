@@ -15,7 +15,7 @@ class Header extends Component {
 
     render() {
         let header;
-        if (!this.props.logged_in) {
+        if (!this.props.login_data.logged_in) {
             header = (
                 <Navbar bg="dark" variant="dark" expand="lg" sticky={"top"}>
                     <LinkContainer to={"/"}>
@@ -76,12 +76,11 @@ class Header extends Component {
                             </Nav>
                             <Nav fill={true} className={"justify-content-end"}>
                                 <NavDropdown eventKey={1} id="basic-nav-dropdown" drop={"down"}
-                                title={
-                                    <Image dir={"public/logo192.png"} alt={"user pic"}/>
-                                }>
+                                title= this.props.login_data.login_credentials.username
+                                >
 
                                     <NavDropdown.Item eventKey={1.1} href="#profile">Profile</NavDropdown.Item>
-                                    <NavDropdown.Item eventKey={1.2} href={"/"} onClick={()=>this.props.onReq("false")}>
+                                    <NavDropdown.Item eventKey={1.2} href={"/"} onClick={()=>this.props.onReq("false",null)}>
                                         Logout
                                     </NavDropdown.Item>
                                 </NavDropdown>
