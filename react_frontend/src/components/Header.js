@@ -76,7 +76,7 @@ class Header extends Component {
                             </Nav>
                             <Nav fill={true} className={"justify-content-end"}>
                                 <NavDropdown eventKey={1} id="basic-nav-dropdown" drop={"down"}
-                                title= this.props.login_data.login_credentials.username
+                                title= {this.props.login_data.login_credentials.username}
                                 >
 
                                     <NavDropdown.Item eventKey={1.1} href="#profile">Profile</NavDropdown.Item>

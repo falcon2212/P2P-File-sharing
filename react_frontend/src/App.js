@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import { Router, Route, IndexRoute, useRouterHistory } from 'react-router';
-// import { createHashHistory } from 'history';
 import {
     Switch,
     Route,
@@ -20,6 +18,7 @@ class App extends Component {
             login_credentials : {}
             // middle_content: "home"
         };
+        this.handleReq = this.handleReq.bind(this);
     }
 
     handleReq(ls, lc) {
@@ -52,7 +51,7 @@ class App extends Component {
                     </Route>
                     <Route path={"/sign_up"}>
                         <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
-                        <Middle middle_content={"sign_up"}/>
+                        <Middle middle_content={"sign_up"} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                     </Route>
                 </Switch>
             </div>

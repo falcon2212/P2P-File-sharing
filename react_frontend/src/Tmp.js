@@ -1,17 +1,34 @@
-import React from 'react';
-import {Route} from "react-router";
-import {Link} from "react-router-dom";
-import {App} from "./App";
+import React, {Component} from 'react';
 
-const Tmp = () => (
-    <div>
-        <nav>
-            <Link to="/dashboard">App</Link>
-        </nav>
-        <div>
-            <Route path="/dashboard" component={App} />
-        </div>
-    </div>
-);
+class Tmp extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoaded: false,
+            error: null,
+        };
+    }
+
+    componentDidMount() {
+        console.log('I was triggered during componentDidMount')
+        fetch("http://localhost:3080/")
+            .then(res => res.json())
+            .then((res) => {
+                this.setState({isLoaded: true,});
+                console.log(res);
+            })
+            .catch((err)=>{
+                this.setState({isLoaded: true, error: err});
+                console.log('fuck')
+                console.log(err);
+            });
+    }
+
+    render(){
+        return(
+            <h1>Check console</h1>
+        );
+    }
+}
 
 export { Tmp };

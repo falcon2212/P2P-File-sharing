@@ -4,7 +4,7 @@ import {Home} from "./Home";
 import {About} from "./About";
 import {FAQ} from "./FAQ";
 import {Login} from "./Login";
-import {Sign_up} from "./Sign_up";
+import {SignUp} from "./SignUp";
 
 class Middle extends Component{
     // constructor(props) {
@@ -29,7 +29,7 @@ class Middle extends Component{
             middle = <Login onReq={this.props.onReq}/>;
         }
         else if(this.props.middle_content === "sign_up"){
-            middle = <Sign_up/>;
+            middle = <SignUp onReq={this.props.onReq}/>;
         }
         return(
             middle
