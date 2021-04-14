@@ -4,15 +4,18 @@
 * Initial setup
 ****************************************************************************/
 
-// var configuration = {
-//   'iceServers': [{
-//     'urls': 'stun:stun.l.google.com:19302'
-//   }]
-// };
+ var configuration = {
+   'iceServers': [{
+     'urls': 'stun:stun.l.google.com:19302'
+   }]
+ };
 
 function t(){
     console.log(Date.now());
 }
+
+const MAXIMUM_MESSAGE_SIZE = 65535;
+const END_OF_FILE_MESSAGE = 'EOF';
 
 
 var link = null;
@@ -21,7 +24,7 @@ var clientList;
 var isInitiator;
 var clientId;
 var dest_id;
-var configuration = null;
+//var configuration = null;
 var dataChannel;
 var peerConn;
 var room = window.location.hash.substring(1);
@@ -29,7 +32,9 @@ var sendBtn = document.getElementById('send');
 var online = document.getElementById('online');
 var connect = document.getElementById('connect');
 
-console.log(sendBtn, connect, online);
+//const {arrayBufferWithMime,arrayBufferMimeDecouple} = require('arraybuffer-mime')
+
+//console.log(sendBtn, connect, online);
 
 //sendBtn.disabled = true;
 
@@ -125,10 +130,11 @@ function signalingMessageCallback(message) {
   }
 
   function sendConnect(id){
-    socket.emit('reset', room);
+    //socket.emit('reset', room);
     dest_id = id;
     isInitiator = true;
     //createPeer();
+    //console.log("HERE inside sendConnect");
     socket.emit('sendConnect', dest_id, clientId, room);
     //console.log(id);
   }
@@ -159,7 +165,8 @@ function createPeer(){
 
     if (isInitiator) {
     console.log('Creating Data Channel');
-    dataChannel = peerConn.createDataChannel('files', {reliable : false});
+    dataChannel = peerConn.createDataChannel('files');
+    dataChannel.binaryType = 'arraybuffer';
     onDataChannelCreated(dataChannel);
     
     console.log('Creating an offer');
@@ -178,13 +185,28 @@ function createPeer(){
     peerConn.ondatachannel = function(event) {
         console.log('ondatachannel:', event.channel);
         dataChannel = event.channel;
+        dataChannel.binaryType = 'arraybuffer';
         onDataChannelCreated(dataChannel);
     };
     }
 
 }
 
-function sendFile(){
+async function sendFile(){
+
+  var fileInput = document.getElementById('file')
+  var file = fileInput.files[0];
+
+  if(file){
+    const arrayBuffer = await file.arrayBuffer();
+    for (let i = 0; i < arrayBuffer.byteLength; i += MAXIMUM_MESSAGE_SIZE) {
+      dataChannel.send(arrayBuffer.slice(i, i + MAXIMUM_MESSAGE_SIZE));
+    }
+    dataChannel.send(END_OF_FILE_MESSAGE);
+  }
+}
+
+/*function sendFile(){
 
     var fileInput = document.getElementById('file')
     var file = fileInput.files[0];
@@ -202,14 +224,14 @@ function sendFile(){
         fileReader.readAsDataURL(file);
         render();
     }
-}
+}*/
 
 function dummy(event, something){
     console.log("Inside dummy");
 }
 
-function onReadAsDataURL(event, text){
-    var chunkLength = 1024;
+/*function onReadAsDataURL(event, text){
+    var chunkLength = 1024*1024;
     var data = {};
     if (event) {
         text = event.target.result;
@@ -228,7 +250,8 @@ function onReadAsDataURL(event, text){
     if(remainingURL.length){
         onReadAsDataURL(null, remainingURL);
     }
-}
+}*/
+
 
 
 function onDataChannelCreated(channel){
@@ -245,11 +268,30 @@ function onDataChannelCreated(channel){
       sendBtn.disabled = true;
     }
 
-    channel.onmessage = receiveFile;
+    channel.onmessage = async (event) => {
+      const { data } = event;
+      try {
+        if (data !== END_OF_FILE_MESSAGE) {
+          chunks.push(data);
+        } else {
+          const arrayBuffer = chunks.reduce((acc, arrayBuffer) => {
+            const tmp = new Uint8Array(acc.byteLength + arrayBuffer.byteLength);
+            tmp.set(new Uint8Array(acc), 0);
+            tmp.set(new Uint8Array(arrayBuffer), acc.byteLength);
+            return tmp;
+          }, new Uint8Array());
+          const blob = new Blob([arrayBuffer], {type : 'application/pdf'});
+          render(blob, dataChannel.label);
+          //channel.close();
+        }
+      } catch (err) {
+        console.log(err);
+        console.log('File transfer failed');
+      }
+    };
+  };   
 
-}   
-
-function receiveFile(event){
+/*function receiveFile(event){
     var data = JSON.parse(event.data);
     chunks.push(data.message);
     if(data.last)
@@ -259,14 +301,17 @@ function receiveFile(event){
         chunks = [];
     }
     render();
-}
+}*/
 
-function render(){
+
+function render(blob, fileName){
+  
     var downloadList = document.getElementById('downloadList');
     var html = '';
-    if(link)
+    const url = window.URL.createObjectURL(blob);
+    if(url)
     {
-        var downloadlink = '<a href=' + link + '> download now </a> ';
+        var downloadlink = '<a href=' + url + ' download = '+fileName+' > download now </a> ';
         html+='<li><small>' + downloadlink + '</small></li>';
     }
     else
@@ -274,6 +319,15 @@ function render(){
         html += '<li>No files available here</li>';
     }
     downloadList.innerHTML = html;
+    //console.log("HERE");
+    /*
+    const a = document.createElement('a');
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();*/
 }
 
 

@@ -8,11 +8,6 @@
     </head>
     <body>
         <h3>File Upload</h3>
-
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-        <script src = "main.js"></script>
-
         <div class="container-fluid" style="margin-top: 5em;">
             <div class="container" id="members">
                 <h4 id="online">Users online (0) </h4>
@@ -21,10 +16,13 @@
 
             <div class="container" id="connect" style="display:block">
                 <input type="file" id="file" class="form-control" ></input>
-                <button class="demo-chat-send btn btn-success" id="send" onclick="sendFile()">Send</button>
+                <!--<button class="demo-chat-send btn btn-success" id="send" >Send</button>-->
                 <ul id="downloadList"></ul>
             </div>
-
         </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+        <!---<script src = "main.js"></script>--->
+        <script src = "bundle.js"></script>
     </body>
 </html>

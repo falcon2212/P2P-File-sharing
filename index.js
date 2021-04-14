@@ -27,8 +27,8 @@ io.sockets.on('connection', function(socket) {
         socket.emit('log', array);
       }
 
-    socket.on('message',function(message, clientId) {
-        io.to(clientId).emit('message', message);
+    socket.on('message',function(message, clientId, id) {
+        io.to(clientId).emit('message', message, id);
     })
 
     socket.on('sendConnect', function(dest_Id, clientId, room){
@@ -41,9 +41,9 @@ io.sockets.on('connection', function(socket) {
         io.sockets.in(room).emit('reset');
     })
 
-    socket.on('ready', function(dest_Id){
+    socket.on('ready', function(dest_Id, clientId){
         log("Ready in server");
-        io.to(dest_Id).emit('ready');
+        io.to(dest_Id).emit('ready', clientId);
     })
 
     socket.on('create or join', function(room) {
