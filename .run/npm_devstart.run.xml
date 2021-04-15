@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="npm_serverstart" type="js.build_tools.npm">
+  <configuration default="false" name="npm_devstart" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/../window-drop-dev/package.json" />
     <command value="run" />
     <scripts>
-      <script value="serverstart" />
+      <script value="devstart" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
