@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="node serverstart" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/node_backend/package.json" />
+    <package-json value="$PROJECT_DIR$/../window-drop-dev/node_backend/package.json" />
     <command value="run" />
     <scripts>
       <script value="serverstart" />

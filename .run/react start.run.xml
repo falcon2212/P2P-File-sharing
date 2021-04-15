@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="react start" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/react_frontend/package.json" />
+    <package-json value="$PROJECT_DIR$/../window-drop-dev/react_frontend/package.json" />
     <command value="run" />
     <scripts>
       <script value="start" />
