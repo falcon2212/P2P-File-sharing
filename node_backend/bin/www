@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('node-backend:server');
 var http = require('http');
+const socketIo = require("socket.io");
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,87 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+  }
+});
+
+/**
+ * Socket server.
+ */
+
+// let interval;
+//
+// io.on("connection", (socket) => {
+//   console.log("New client connected");
+//   if (interval) {
+//     clearInterval(interval);
+//   }
+//   interval = setInterval(() => getApiAndEmit(socket), 1000);
+//   socket.on("disconnect", () => {
+//     console.log("Client disconnected");
+//     clearInterval(interval);
+//   });
+// });
+
+io.on('connection', function(socket) {
+
+  function log() {
+    var array = ['Message from server:'];
+    array.push.apply(array, arguments);
+    socket.emit('log', array);
+  }
+
+  socket.on('message',function(message, clientId, id) {
+    io.to(clientId).emit('message', message, id);
+  })
+
+  socket.on('sendConnect', function(dest_Id, clientId, room){
+    io.to(dest_Id).emit('sendConnect', clientId);
+    //io.sockets.in(room).emit('ready', room);
+    //socket.broadcast.emit('ready', room);
+  })
+
+  socket.on('reset', function(room){
+    io.sockets.in(room).emit('reset');
+  })
+
+  socket.on('ready', function(dest_Id, clientId){
+    log("Ready in server");
+    io.to(dest_Id).emit('ready', clientId);
+  })
+
+  socket.on('create or join', function(room) {
+    log('Received request to create or join room ' + room);
+
+    var clientsInRoom = io.sockets.adapter.rooms[room];
+    var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
+    log('Room ' + room + ' now has ' + numClients + ' client(s) and socketid is' + socket.id);
+
+    if(numClients<3)
+    {
+      socket.join(room);
+      log("Joined Successfully");
+      socket.emit('socketid', socket.id);
+      clientsInRoom = io.sockets.adapter.rooms[room];
+      socket.emit('Display clients', Object.keys(clientsInRoom.sockets));
+    }
+    else
+    {
+      log("Room is full");
+    }
+  })
+
+})
+
+
+const getApiAndEmit = socket => {
+  const response = new Date();
+  // Emitting a new message. Will be consumed by the client
+  socket.emit("FromAPI", response);
+};
 
 /**
  * Listen on provided port, on all network interfaces.
