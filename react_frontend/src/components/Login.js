@@ -89,7 +89,7 @@ class Login extends Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else if(name !== ""){
-            return <Redirect to={"/"}/>;
+            return <Redirect to={"/dashboard"}/>;
         }
         else {
             {/*TODO: isLoaded error handling*/}

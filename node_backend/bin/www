@@ -24,7 +24,7 @@ var server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: "*:",
   }
 });
 
@@ -49,41 +49,47 @@ const io = socketIo(server, {
 io.on('connection', function(socket) {
 
   function log() {
-    var array = ['Message from server:'];
-    array.push.apply(array, arguments);
-    socket.emit('log', array);
+    // var array = ['Message from server:'];
+    // array.push.apply(array, arguments);
+    // socket.emit('log', array);
+    console.log(arguments);
   }
 
   socket.on('message',function(message, clientId, id) {
+    console.log("Listener: message");
     io.to(clientId).emit('message', message, id);
   })
 
   socket.on('sendConnect', function(dest_Id, clientId, room){
+    console.log("Listener: sendConnect");
     io.to(dest_Id).emit('sendConnect', clientId);
     //io.sockets.in(room).emit('ready', room);
     //socket.broadcast.emit('ready', room);
   })
 
   socket.on('reset', function(room){
+    console.log("Listener: reset");
     io.sockets.in(room).emit('reset');
   })
 
   socket.on('ready', function(dest_Id, clientId){
+    console.log("Listener: ready");
     log("Ready in server");
     io.to(dest_Id).emit('ready', clientId);
   })
 
-  socket.on('create or join', function(room) {
-    log('Received request to create or join room ' + room);
-
+  socket.on('create or join', (room) => {
+    console.log("Listener: create or join");
+    // log('Received request to create or join room ' + room);
+    console.log('Received request to create or join room ' + room);
     var clientsInRoom = io.sockets.adapter.rooms[room];
     var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
-    log('Room ' + room + ' now has ' + numClients + ' client(s) and socketid is' + socket.id);
+    console.log('Room ' + room + ' now has ' + numClients + ' client(s) and socketid is' + socket.id);
 
     if(numClients<3)
     {
       socket.join(room);
-      log("Joined Successfully");
+      console.log("Joined Successfully");
       socket.emit('socketid', socket.id);
       clientsInRoom = io.sockets.adapter.rooms[room];
       socket.emit('Display clients', Object.keys(clientsInRoom.sockets));
@@ -97,11 +103,11 @@ io.on('connection', function(socket) {
 })
 
 
-const getApiAndEmit = socket => {
-  const response = new Date();
-  // Emitting a new message. Will be consumed by the client
-  socket.emit("FromAPI", response);
-};
+// const getApiAndEmit = socket => {
+//   const response = new Date();
+//   // Emitting a new message. Will be consumed by the client
+//   socket.emit("FromAPI", response);
+// };
 
 /**
  * Listen on provided port, on all network interfaces.

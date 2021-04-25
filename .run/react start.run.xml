@@ -6,7 +6,10 @@
       <script value="start" />
     </scripts>
     <node-interpreter value="project" />
-    <envs />
+    <envs>
+      <env name="BROWSER" value="google-chrome" />
+      <env name="PORT" value="3000" />
+    </envs>
     <method v="2" />
   </configuration>
 </component>

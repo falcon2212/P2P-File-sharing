@@ -5,6 +5,7 @@ import {About} from "./About";
 import {FAQ} from "./FAQ";
 import {Login} from "./Login";
 import {SignUp} from "./SignUp";
+import {Dashboard} from "./Dashboard";
 
 class Middle extends Component{
     // constructor(props) {
@@ -30,6 +31,9 @@ class Middle extends Component{
         }
         else if(this.props.middle_content === "sign_up"){
             middle = <SignUp onReq={this.props.onReq}/>;
+        }
+        else if(this.props.middle_content === "dashboard"){
+            middle = <Dashboard/>;
         }
         return(
             middle
