@@ -39,45 +39,40 @@ class FAQ extends Component {
 
     renderClients (){
         console.log("Function: renderClients")
-        var currentState = this.state;
-        currentState.online = "online";
-        currentState.memberList = 'memberList';
+        this.setState({online: "online"});
 
-        var onlineUsers = ((currentState.clientList.length === 0) ? 0 : (currentState.clientList.length - 1) );
+        var onlineUsers = ((this.state.clientList.length === 0) ? 0 : (this.state.clientList.length - 1) );
 
-        currentState.online = 'Users online (' + (onlineUsers) +   ')';
+        this.setState({online: 'Users online (' + (onlineUsers) +   ')'});
 
         var html = [];
         //console.log(clientList);
-        if(currentState.clientList.length === 1)
+        if(this.state.clientList.length === 1)
         {
             html.push(<li>No members online</li>);
-            currentState.memberList = html;
-            this.setState(currentState);
+            this.setState({memberList: html});
             return;
         }
 
-        for(var i=0; i<currentState.clientList.length; i++)
+        for(var i=0; i<this.state.clientList.length; i++)
         {
-            var element = currentState.clientList[i];
-            if(element === currentState.clientId) continue;
-            html.push(<li><small>{element}<button className="demo-chat-send btn btn-success" onClick={() => this.sendFile(element)}>Send</button></small></li>);
-            currentState.memberList = html;
+            var element = this.state.clientList[i];
+            if(element === this.state.clientId) continue;
+            console.log("Fuckkk", element);
+            html.push(<li><small>{element}<button className="demo-chat-send btn btn-success" id={element} onClick={() => this.sendFile(element)}>Send</button></small></li>);
+            this.setState({memberList: html});
 
         }
-        this.setState(currentState);
         console.log("Function finished renderClients",this.state);
     }
 
     allConnect (){
         console.log("Function: allConnect")
-        var currentState = this.state;
-        currentState.connections = {};
-        currentState.datachannels = {};
-        this.setState(currentState);
-        for(let i = 0;i<currentState.clientList.length;i++){
-            var element = currentState.clientList[i];
-            if(element === currentState.clientId) continue;
+        this.setState({connections: {}});
+        this.setState({datachannels: {}});
+        for(let i = 0;i<this.state.clientList.length;i++){
+            var element = this.state.clientList[i];
+            if(element === this.state.clientId) continue;
             this.sendConnect(element);
         }
         console.log("Function finished allConnect",this.state);
@@ -85,13 +80,12 @@ class FAQ extends Component {
 
     async sendConnect (id){
         console.log("Function: sendConnect")
-        var currentState = this.state;
         //socket.emit('reset', room);
-        currentState.dest_id = id;
-        currentState.isInitiator = true;
+        this.setState({dest_id: id});
+        this.setState({isInitiator: true});
         //createPeer();
         //console.log("HERE inside sendConnect");
-        currentState.socket.emit('sendConnect', currentState.dest_id, currentState.clientId, currentState.room);
+        this.state.socket.emit('sendConnect', this.state.dest_id, this.state.clientId, this.state.room);
         console.log("Function finished allConnect",this.state);
         return true;
         //console.log(id);
@@ -103,7 +97,6 @@ class FAQ extends Component {
 
     createPeer(id){
         console.log("Function: createPeer")
-        var currentState = this.state;
         console.log(this.state);
         //console.log(id);
 
@@ -111,11 +104,12 @@ class FAQ extends Component {
         //connect.style.display = 'block';
 
         console.log('Creating Peer connection as initiator?');
-        currentState.connections[id] = new RTCPeerConnection(currentState.configuration);
-        this.setState(currentState);
+        let tmp = this.state.connections;
+        let tmp1 = this.state.datachannels;
+        tmp[id] = new RTCPeerConnection(this.state.configuration);
         console.log(this.state);
 
-        currentState.connections[id].onicecandidate = (event) => {
+        tmp[id].onicecandidate = (event) => {
             console.log('icecandidate event:', event);
             if (event.candidate) {
                 this.sendMessage({
@@ -128,37 +122,37 @@ class FAQ extends Component {
                 console.log('End of candidates.');
             }
         };
-        this.setState(currentState);
+        this.setState({connections:tmp});
         console.log(this.state);
 
-        if (currentState.isInitiator) {
+        if (this.state.isInitiator) {
             console.log('Creating Data Channel');
-            currentState.datachannels[id] = currentState.connections[id].createDataChannel('files');
-            currentState.datachannels[id].binaryType = 'arraybuffer';
-            this.setState(currentState);
-            this.onDataChannelCreated(currentState.datachannels[id]);
+            tmp1[id] = this.state.connections[id].createDataChannel('files');
+            tmp1[id].binaryType = 'arraybuffer';
+            this.setState({datachannels: tmp1});
+            this.onDataChannelCreated(id);
 
             console.log('Creating an offer');
-            currentState.connections[id].createOffer().then((offer) => {
-                return currentState.connections[id].setLocalDescription(offer);
+            this.state.connections[id].createOffer().then((offer) => {
+                return this.state.connections[id].setLocalDescription(offer);
             })
                 .then(() => {
-                    console.log('sending local desc:', currentState.connections[id].localDescription);
-                    this.sendMessage(currentState.connections[id].localDescription, id);
+                    console.log('sending local desc:', this.state.connections[id].localDescription);
+                    this.sendMessage(this.state.connections[id].localDescription, id);
                 })
                 .catch(this.logError);
 
         } else {
             //console.log(peerConn);
             //console.log("Inside else");
-            currentState.connections[id].ondatachannel = (event) => {
+            tmp[id].ondatachannel = (event) => {
                 console.log('ondatachannel:', event.channel);
-                currentState.datachannels[id] = event.channel;
-                currentState.datachannels[id].binaryType = 'arraybuffer';
-                this.setState(currentState);
-                this.onDataChannelCreated(currentState.datachannels[id]);
+                tmp1[id] = event.channel;
+                tmp1[id].binaryType = 'arraybuffer';
+                this.setState({datachannels: tmp1});
+                this.onDataChannelCreated(id);
             };
-            this.setState(currentState);
+            this.setState({connections:tmp});
         }
         //senders[id]=[peerConn, dataChannel];
             console.log("Function finished createPeer",this.state);
@@ -171,34 +165,34 @@ class FAQ extends Component {
             console.log("Function finished sendMessage",this.state);
     }
 
-    onDataChannelCreated (channel){
+    onDataChannelCreated (id){
         console.log("Function: onDataChannelCreated")
-        var currentState = this.state;
 
-        console.log('onDataChannelCreated:', channel);
-        console.log(channel.readyState);
-        channel.onopen = () => {
+        let channel = this.state.datachannels;
+        console.log('onDataChannelCreated:', channel[id]);
+        console.log(channel[id].readyState);
+        channel[id].onopen = () => {
             console.log('CHANNEL opened!!!');
             //sendBtn.disabled = false;
         };
 
-        channel.onclose = () => {
+        channel[id].onclose = () => {
             console.log('Channel closed.');
-            currentState.sendBtn = false;
-            this.setState(currentState);
+            // currentState.sendBtn = false;
         }
 
-        channel.onmessage = async (event) => {
+        channel[id].onmessage = async (event) => {
             const { data } = event;
             try {
                 //console.log(data);
                 if (data !== END_OF_FILE_MESSAGE) {
                     //console.log("DATA");
-                    currentState.chunks.push(data);
-                    this.setState(currentState);
+                    var tmp = this.state.chunks;
+                    tmp.push(data);
+                    this.setState({chunks:tmp});
                 } else {
                     //console.log("ASSEMBLY");
-                    let abWithMime = currentState.chunks.reduce((acc, arrayBuffer) => {
+                    let abWithMime = this.state.chunks.reduce((acc, arrayBuffer) => {
                         const tmp = new Uint8Array(acc.byteLength + arrayBuffer.byteLength);
                         tmp.set(new Uint8Array(acc), 0);
                         tmp.set(new Uint8Array(arrayBuffer), acc.byteLength);
@@ -215,7 +209,8 @@ class FAQ extends Component {
                 console.log('File transfer failed');
             }
         };
-            console.log("Function finished onDataChannelCreated",this.state);
+        this.setState({datachannels: channel});
+        console.log("Function finished onDataChannelCreated",this.state);
     };
 
     logError (err) {
@@ -231,7 +226,6 @@ class FAQ extends Component {
 
     render1 (blob, fileName){
         console.log("Function: render1")
-        var currentState = this.state;
         var html;
         const url = window.URL.createObjectURL(blob);
         if(url)
@@ -243,15 +237,13 @@ class FAQ extends Component {
         {
             html = <li>No files available here</li>;
         }
-        currentState.downloadList = html;
-        currentState.chunks = []
-        this.setState(currentState);
+        this.setState({downloadList: html});
+        this.setState({chunks: []});
             console.log("Function finished render1",this.state);
     }
 
     signalingMessageCallback (message, id) {
         console.log("Function: signalingMessageCallback")
-        var currentState = this.state;
         if (message.type === 'offer') {
             console.log('Got offer. Sending answer to peer.');
             //console.log(message)
@@ -259,44 +251,45 @@ class FAQ extends Component {
             //console.log(peerConn);
             //peerConn.setRemoteDescription(temp).then(() => {}).catch(logError);
             console.log(id);
-            currentState.connections[id].setRemoteDescription(new RTCSessionDescription(message), () => {},
+            this.state.connections[id].setRemoteDescription(new RTCSessionDescription(message), () => {},
                 this.logError);
-            currentState.connections[id].createAnswer().then((answer) => {
+            this.state.connections[id].createAnswer().then((answer) => {
                 this.onLocalSessionCreated(answer,id);
             }).catch(this.logError);
-            this.setState(currentState);
         } else if (message.type === 'answer') {
             console.log('Got answer.');
-            currentState.connections[id].setRemoteDescription(new RTCSessionDescription(message), () => {},
-                currentState.logError);
-            this.setState(currentState);
+            this.state.connections[id].setRemoteDescription(new RTCSessionDescription(message), () => {},
+                this.logError);
         } else if (message.type === 'candidate') {
             console.log("Candidate");
-            currentState.connections[id].addIceCandidate(new RTCIceCandidate({
+            this.state.connections[id].addIceCandidate(new RTCIceCandidate({
                 candidate: message.candidate,
                 sdpMLineIndex: message.label,
                 sdpMid: message.id
             }));
-            this.setState(currentState);
         }
             console.log("Function finished signalingMessageCallback",this.state);
     }
 
     onLocalSessionCreated (desc,id) {
         console.log("Function: onLocalSessionCreated")
-        var currentState = this.state;
         console.log('local session created:', desc);
-        currentState.connections[id].setLocalDescription(desc).then(() => {
-            console.log('sending local desc:', currentState.connections[id].localDescription);
-            this.sendMessage(currentState.connections[id].localDescription, id);
+        this.state.connections[id].setLocalDescription(desc).then(() => {
+            console.log('sending local desc:', this.state.connections[id].localDescription);
+            this.sendMessage(this.state.connections[id].localDescription, id);
         }).catch(this.logError);
-        this.setState(currentState);
             console.log("Function finished onLocalSessionCreated",this.state);
     }
 
     async sendFile(id){
+        for(var i=0; i<this.state.clientList.length; i++){
+            if(this.state.clientId === this.state.clientList[i]) continue;
+            else{
+                id = this.state.clientList[i];
+            }
+        }
         console.log("Function: sendFile")
-        var currentState = this.state;
+        // var id = element.getAttribute("id");
         var fileInput = document.getElementById('file')
         var file = fileInput.files[0];
         //console.log(id);
@@ -306,7 +299,10 @@ class FAQ extends Component {
             let mime = file.type;
             let abWithMime = arrayBufferWithMime(arrayBuffer, mime)
             console.log(arrayBuffer, mime, abWithMime);
-            let dataChannel = currentState.datachannels[id];
+            let dataChannel = this.state.datachannels[id];
+            console.log('onDataChannelCreated:', dataChannel);
+            console.log(dataChannel.readyState);
+            console.log(id);
 
             for (let i = 0; i < abWithMime.byteLength; i += MAXIMUM_MESSAGE_SIZE) {
                 //console.log(dataChannel.readyState);
@@ -361,21 +357,19 @@ class FAQ extends Component {
     }
 
     componentDidMount() {
-        let currentState = this.state;
-        if (!currentState.room) {
-            currentState.room = window.location.hash = "1";
+        // let currentState = this.state;
+        if (!this.state.room) {
+            this.state.room = window.location.hash = "1";
             //console.log("HERE"+room)
         }
-        currentState.socket = socketIOClient.connect(ENDPOINT, {reconnect: true});
-        this.setState(currentState);
+        this.state.socket = socketIOClient.connect(ENDPOINT, {reconnect: true});
 
-        currentState.socket.emit('create or join', currentState.room);
+        this.state.socket.emit('create or join', this.state.room);
 
-        currentState.socket.on('Display clients', (clientsInRoom) => {
+        this.state.socket.on('Display clients', (clientsInRoom) => {
             console.log("Listener: Display Clients")
             console.log(this.state);
-            currentState.clientList = clientsInRoom;
-            this.setState(currentState);
+            this.setState({clientList: clientsInRoom});
             this.renderClients();
             this.allConnect();
             //console.log(senders);
@@ -383,7 +377,7 @@ class FAQ extends Component {
             console.log("Listener finished Display clients",this.state);
         });
 
-        currentState.socket.on('ready', (dest_Id) => {
+        this.state.socket.on('ready', (dest_Id) => {
             console.log("Listener: ready")
             console.log("Inside ready");
             console.log(dest_Id);
@@ -393,44 +387,42 @@ class FAQ extends Component {
                     console.log("Listener finished ready",this.state);
             });
 
-        currentState.socket.on('reset', () => {
+        this.state.socket.on('reset', () => {
             console.log("Listener: reset")
             window.location.reload();
                     console.log("Listener finished reset",this.state);
             });
 
-        currentState.socket.on('sendConnect', (dest_Id) => {
+        this.state.socket.on('sendConnect', (dest_Id) => {
             console.log("Listener: sendConnect")
-            console.log("Current State", currentState);
+            // console.log("Current State", currentState);
             console.log("this State", this.state);
-            currentState.dest_id = dest_Id
-            currentState.isInitiator = false;
-            this.setState(currentState);
+            this.setState({dest_id: dest_Id});
+            this.setState({isInitiator: false});
             console.log(this.state);
             this.t();
-            console.log(currentState.dest_id);
-            this.createPeer(currentState.dest_id);
+            console.log(this.state.dest_id);
+            this.createPeer(this.state.dest_id);
             this.t();
-            currentState.socket.emit('ready', currentState.dest_id, currentState.clientId);
+            this.state.socket.emit('ready', this.state.dest_id, this.state.clientId);
             console.log("Listener finished sendConnect",this.state);
             return true;
             });
 
-        currentState.socket.on('socketid', (id) => {
+        this.state.socket.on('socketid', (id) => {
             console.log("Listener: socketid")
-            currentState.clientId = id;
-            this.setState(currentState);
-            console.log("Received clientid" + currentState.clientId);
+            this.setState({clientId: id});
+            console.log("Received clientid" + this.state.clientId);
                     console.log("Listener finished socketid",this.state);
             });
 
-        currentState.socket.on('log', (array) => {
+        this.state.socket.on('log', (array) => {
             console.log("Listener: log")
             console.log.apply(console, array);
                     console.log("Listener finished log",this.state);
             });
 
-        currentState.socket.on('message', (message, id) => {
+        this.state.socket.on('message', (message, id) => {
             console.log("Listener: message")
             console.log('Client received message:', message);
             console.log(id);
