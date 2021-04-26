@@ -28,7 +28,7 @@ jobs:
     - name: Build Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
-        image: khalid2212/window-drop
+        image: vemshari27/p2p-file-sharing
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
