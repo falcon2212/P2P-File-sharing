@@ -289,6 +289,7 @@ class FAQ extends Component {
             }
         }
         console.log("Function: sendFile")
+        // console.log(element);
         // var id = element.getAttribute("id");
         var fileInput = document.getElementById('file')
         var file = fileInput.files[0];
@@ -366,12 +367,12 @@ class FAQ extends Component {
 
         this.state.socket.emit('create or join', this.state.room);
 
-        this.state.socket.on('Display clients', (clientsInRoom) => {
+        this.state.socket.on('Display clients', (clientsInRoom, isAllConnect) => {
             console.log("Listener: Display Clients")
             console.log(this.state);
             this.setState({clientList: clientsInRoom});
             this.renderClients();
-            this.allConnect();
+            if(isAllConnect) this.allConnect();
             //console.log(senders);
             //console.log(clientList);
             console.log("Listener finished Display clients",this.state);

@@ -92,7 +92,14 @@ io.on('connection', function(socket) {
       console.log("Joined Successfully");
       socket.emit('socketid', socket.id);
       clientsInRoom = io.sockets.adapter.rooms[room];
-      socket.emit('Display clients', Object.keys(clientsInRoom.sockets));
+      let tmp = Object.keys(clientsInRoom.sockets);
+      socket.emit('Display clients', Object.keys(clientsInRoom.sockets), true);
+      for(var i=0; i<tmp.length; i++){
+        console.log(tmp[i], socket.id);
+        if(tmp[i] !== socket.id) {
+          io.to(tmp[i]).emit('Display clients', Object.keys(clientsInRoom.sockets), false);
+        }
+      }
     }
     else
     {
