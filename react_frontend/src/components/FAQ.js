@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Component } from "react";
 import "./dashboard.css";
 import socketIOClient from "socket.io-client";
+import {Col, Container, Form, FormFile, ListGroup, Row} from "react-bootstrap";
+import {ArrowUpSquareFill} from "react-bootstrap-icons";
 
 const ENDPOINT = "http://127.0.0.1:3080";
 const MAXIMUM_MESSAGE_SIZE = 65535;
@@ -31,7 +33,7 @@ class FAQ extends Component {
             alias: null,
             online: null,
             memberList: [],
-            file:null,
+            fileList:[],
             socket:null,
             downloadList:null,
         };
@@ -39,17 +41,14 @@ class FAQ extends Component {
 
     renderClients (){
         console.log("Function: renderClients")
-        this.setState({online: "online"});
-
         var onlineUsers = ((this.state.clientList.length === 0) ? 0 : (this.state.clientList.length - 1) );
 
-        this.setState({online: 'Users online (' + (onlineUsers) +   ')'});
+        this.setState({online: onlineUsers});
 
         var html = [];
         //console.log(clientList);
         if(this.state.clientList.length === 1)
         {
-            html.push(<li>No members online</li>);
             this.setState({memberList: html});
             return;
         }
@@ -58,8 +57,7 @@ class FAQ extends Component {
         {
             var element = this.state.clientList[i];
             if(element === this.state.clientId) continue;
-            console.log("Fuckkk", element);
-            html.push(<li><small>{element}<button className="demo-chat-send btn btn-success" id={element} onClick={() => this.sendFile(element)}>Send</button></small></li>);
+            html.push(element);
             this.setState({memberList: html});
 
         }
@@ -432,25 +430,46 @@ class FAQ extends Component {
             });
     }
 
+    addFile(event) {
+        let files = this.state.fileList;
+        files.push(event.target.files[0]);
+        // console.log(event.target.innerHTML);
+    }
+
+    tmp(event){
+        console.log(event);
+    }
+    createUserList() {
+        let html = [];
+        for(var i=0; i<this.state.memberList.length; i++){
+            html.push(
+                <ListGroup.Item>
+                    <Row className={"p-2"}>
+                        <Col>{this.state.memberList[i]}</Col>
+                        <Col><Form.File onChange={(e) => {this.addFile(e)}} type={"file"} className={"custom-file-label"} label={"Select file"} custom/></Col>
+                        <Col className={"justify-content-end"}><ArrowUpSquareFill id={"fuck"} onClick={this.tmp}/></Col>
+                    </Row>
+                </ListGroup.Item>
+            );
+        }
+        return html;
+    }
+
     render() {
         // var memberList = <ul id="memberList">No members</ul>;
         // if(this.state.memberList !== ""){
         //     memberList.innerHTML = this.state.memberList;
         // }
+        let userList = this.createUserList();
         return(
-            <div>
-                <h3>File Upload</h3>
-                <div className="container-fluid">
-                    <div className="container" id="members">
-                        <h4 id="online">{this.state.online}</h4>
-                        <ul id="memberList">{this.state.memberList}</ul>
-                    </div>
-                    <div className="container" id="connect">
-                           <input type="file" id="file" className="form-control"/>
-                           <ul id="downloadList">{this.state.downloadList}</ul>
-                    </div>
-                </div>
-            </div>
+            <Container className={"justify-content-center mb-5 mt-5"}>
+                <h1>
+                    Users online: {this.state.online}
+                </h1>
+                <ListGroup>
+                    {userList}
+                </ListGroup>
+            </Container>
         );
     }
 }
