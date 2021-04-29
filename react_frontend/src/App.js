@@ -55,7 +55,7 @@ class App extends Component {
                     </Route>
                     <Route path={"/dashboard"}>
                         <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
-                        <Middle middle_content={"dashboard"}/>
+                        <Middle middle_content={"dashboard"} login_data={this.state}/>
                     </Route>
                 </Switch>
             </div>

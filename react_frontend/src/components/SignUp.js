@@ -71,7 +71,7 @@ class SignUp extends Component {
             return <div>Loading...</div>;
         }
         else if(isSubmitted){
-            return <Redirect to={"/"}/>;
+            return <Redirect to={"/dashboard"}/>;
         }
         else {
             return (

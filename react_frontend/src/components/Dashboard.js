@@ -1,50 +1,14 @@
 import React, { useState, useEffect, Component } from "react";
 import "./dashboard.css";
 import socketIOClient from "socket.io-client";
+import {Button, Col, Container, FormFile, ListGroup, Row} from "react-bootstrap";
+import {ArrowUpSquareFill} from "react-bootstrap-icons";
 
 const ENDPOINT = "http://127.0.0.1:3080";
 const MAXIMUM_MESSAGE_SIZE = 65535;
 const END_OF_FILE_MESSAGE = 'EOF';
 const {arrayBufferWithMime,arrayBufferMimeDecouple} = require('arraybuffer-mime');
-
-// function Dashboard() {
-//     const [response, setResponse] = useState("Phuckkkkk");
-//     // setResponse("Phuckkkk");
-//
-//     useEffect(() => {
-//         const socket = socketIOClient.connect(ENDPOINT, {reconnect: true});
-//         var configuration = {
-//             'iceServers': [{
-//                 'urls': 'stun:stun.l.google.com:19302'
-//             }]
-//         };
-//         var link = null;
-//         var chunks = [];
-//         var clientList;
-//         var isInitiator;
-//         var clientId;
-//         var dest_id;
-//         var dataChannel;
-//         var peerConn;
-//         var room = window.location.hash.substring(1);
-//         var sendBtn = document.getElementById('send');
-//         var online = document.getElementById('online');
-//         var connect = document.getElementById('connect');
-//         var connections = {};
-//         var datachannels = {};
-//         var alias;
-//         if (!room) {
-//             room = window.location.hash = randomToken();
-//         }
-//
-//     }, []);
-//
-//     return (
-//         <p>
-//             It's <time dateTime={response}>{response}</time>
-//         </p>
-//     );
-// }
+const arrayBufferConcat = require('arraybuffer-concat')
 
 class Dashboard extends Component {
     constructor(props) {
@@ -55,95 +19,96 @@ class Dashboard extends Component {
                     'urls': 'stun:stun.l.google.com:19302'
                 }]
             },
+            room:null,
             link : null,
             chunks : [],
             clientList: [],
-            isInitiator: "",
-            clientId: "",
-            dest_id: "",
-            dataChannel: "",
-            peerConn: "",
+            isInitiator: null,
+            clientId: null,
+            dest_id: null,
+            dataChannel: null,
+            peerConn: null,
             connections : {},
             datachannels : {},
-            alias: "",
-            online: "",
-            memberList: "",
+            alias: null,
+            online: null,
+            memberList: [],
+            file:null,
             socket:null,
-            downloadList:"",
-        }
+            downloadList:null,
+            usernames:{},
+        };
     }
 
-    renderClients  = function (){
-        var currentState = this.state;
-        currentState.online = "online";
-        currentState.memberList = 'memberList';
+    renderClients (){
+        console.log("Function: renderClients")
+        var onlineUsers = ((this.state.clientList.length === 0) ? 0 : (this.state.clientList.length - 1) );
 
-        var onlineUsers = ((currentState.clientList.length === 0) ? 0 : (currentState.clientList.length - 1) );
+        this.setState({online: onlineUsers});
 
-        currentState.online = 'Users online (' + (onlineUsers) +   ')';
-
-        // var html;
-        // //console.log(clientList);
-        // if(currentState.clientList.length === 1)
-        // {
-        //     html = "<li>No members online</li>";
-        //     currentState.memberList = html;
-        //     this.setState(currentState);
-        //     return;
-        // }
-        //
-        // for(var i=0; i<currentState.clientList.length; i++)
-        // {
-        //     var element = currentState.clientList[i];
-        //     if(element === currentState.clientId) continue;
-        //     html += '<li><small>element<button class="demo-chat-send btn btn-success" onClick = alias("'+element+'")>Send</button></small></li>';
-        // }
-        // currentState.memberList.innerHTML = html;
-
-        this.setState(currentState);
-    }
-
-    allConnect = function (){
-        var currentState = this.state;
-        currentState.connections = {};
-        currentState.datachannels = {};
-        this.setState(currentState);
-        for(let i = 0;i<currentState.clientList.length;i++)
+        var html = [];
+        //console.log(clientList);
+        if(this.state.clientList.length === 1)
         {
-            var element = currentState.clientList[i];
-            if(element === currentState.clientId) continue;
+            this.setState({memberList: html});
+            return;
+        }
+
+        for(var i=0; i<this.state.clientList.length; i++)
+        {
+            var element = this.state.clientList[i];
+            if(element === this.state.clientId) continue;
+            html.push(element);
+            this.setState({memberList: html});
+
+        }
+        console.log("Function finished renderClients",this.state);
+    }
+
+    allConnect (){
+        console.log("Function: allConnect")
+        this.setState({connections: {}});
+        this.setState({datachannels: {}});
+        for(let i = 0;i<this.state.clientList.length;i++){
+            var element = this.state.clientList[i];
+            if(element === this.state.clientId) continue;
             this.sendConnect(element);
         }
+        console.log("Function finished allConnect",this.state);
     }
 
-    sendConnect = async function(id){
-        var currentState = this.state;
+    async sendConnect (id){
+        console.log("Function: sendConnect")
         //socket.emit('reset', room);
-        currentState.dest_id = id;
-        currentState.isInitiator = true;
+        this.setState({dest_id: id});
+        this.setState({isInitiator: true});
         //createPeer();
         //console.log("HERE inside sendConnect");
-        currentState.socket.emit('sendConnect', currentState.dest_id, currentState.clientId, currentState.room);
+        this.state.socket.emit('sendConnect', this.state.dest_id, this.state.clientId, this.state.room, this.props.login_data.login_credentials.username);
+        console.log("Function finished allConnect",this.state);
         return true;
         //console.log(id);
     }
 
-    t = function (){
+    t(){
         console.log(Date.now());
     }
 
-    createPeer = function (id){
-        var currentState = this.state;
+    createPeer(id){
+        console.log("Function: createPeer")
+        console.log(this.state);
         //console.log(id);
 
         //var connect = document.getElementById('connect');
         //connect.style.display = 'block';
 
         console.log('Creating Peer connection as initiator?');
-        currentState.connections[id] = new RTCPeerConnection(currentState.configuration);
-        this.setState(currentState);
+        let tmp = this.state.connections;
+        let tmp1 = this.state.datachannels;
+        tmp[id] = new RTCPeerConnection(this.state.configuration);
+        console.log(this.state);
 
-        currentState.connections[id].onicecandidate = function(event) {
+        tmp[id].onicecandidate = (event) => {
             console.log('icecandidate event:', event);
             if (event.candidate) {
                 this.sendMessage({
@@ -156,72 +121,77 @@ class Dashboard extends Component {
                 console.log('End of candidates.');
             }
         };
-        this.setState(currentState);
+        this.setState({connections:tmp});
+        console.log(this.state);
 
-        if (currentState.isInitiator) {
+        if (this.state.isInitiator) {
             console.log('Creating Data Channel');
-            currentState.datachannels[id] = currentState.connections[id].createDataChannel('files');
-            currentState.datachannels[id].binaryType = 'arraybuffer';
-            this.setState(currentState);
-            this.onDataChannelCreated(currentState.datachannels[id]);
+            tmp1[id] = this.state.connections[id].createDataChannel('files');
+            tmp1[id].binaryType = 'arraybuffer';
+            this.setState({datachannels: tmp1});
+            this.onDataChannelCreated(id);
 
             console.log('Creating an offer');
-            currentState.connections[id].createOffer().then(function(offer) {
-                return currentState.connections[id].setLocalDescription(offer);
+            this.state.connections[id].createOffer().then((offer) => {
+                return this.state.connections[id].setLocalDescription(offer);
             })
                 .then(() => {
-                    console.log('sending local desc:', currentState.connections[id].localDescription);
-                    this.sendMessage(currentState.connections[id].localDescription, id);
+                    console.log('sending local desc:', this.state.connections[id].localDescription);
+                    this.sendMessage(this.state.connections[id].localDescription, id);
                 })
                 .catch(this.logError);
 
         } else {
             //console.log(peerConn);
             //console.log("Inside else");
-            currentState.connections[id].ondatachannel = function(event) {
+            tmp[id].ondatachannel = (event) => {
                 console.log('ondatachannel:', event.channel);
-                currentState.datachannels[id] = event.channel;
-                currentState.datachannels[id].binaryType = 'arraybuffer';
-                this.setState(currentState);
-                this.onDataChannelCreated(currentState.datachannels[id]);
+                tmp1[id] = event.channel;
+                tmp1[id].binaryType = 'arraybuffer';
+                this.setState({datachannels: tmp1});
+                this.onDataChannelCreated(id);
             };
-            this.setState(currentState);
+            this.setState({connections:tmp});
         }
         //senders[id]=[peerConn, dataChannel];
+        console.log("Function finished createPeer",this.state);
     }
 
-    sendMessage = function (message, id) {
+    sendMessage (message, id) {
+        console.log("Function: sendMessage")
         console.log('Client sending message: ', message);
         this.state.socket.emit('message', message, id, this.state.clientId);
+        console.log("Function finished sendMessage",this.state);
     }
 
-    onDataChannelCreated = function (channel){
-        var currentState = this.state;
+    onDataChannelCreated (id){
+        console.log("Function: onDataChannelCreated")
 
-        console.log('onDataChannelCreated:', channel);
-        console.log(channel.readyState);
-        channel.onopen = function() {
+        let channel = this.state.datachannels;
+        console.log('onDataChannelCreated:', channel[id]);
+        console.log(channel[id].readyState);
+        channel[id].onopen = () => {
             console.log('CHANNEL opened!!!');
             //sendBtn.disabled = false;
         };
 
-        channel.onclose = function () {
+        channel[id].onclose = () => {
             console.log('Channel closed.');
-            currentState.sendBtn = false;
-            this.setState(currentState);
+            // currentState.sendBtn = false;
         }
 
-        channel.onmessage = async (event) => {
+        channel[id].onmessage = async (event) => {
             const { data } = event;
             try {
                 //console.log(data);
                 if (data !== END_OF_FILE_MESSAGE) {
                     //console.log("DATA");
-                    currentState.chunks.push(data);
-                    this.setState(currentState);
+                    var tmp = this.state.chunks;
+                    tmp.push(data);
+                    this.setState({chunks:tmp});
                 } else {
                     //console.log("ASSEMBLY");
-                    let abWithMime = currentState.chunks.reduce((acc, arrayBuffer) => {
+                    let abWithMime = this.state.chunks.reduce((acc, arrayBuffer) => {
                         const tmp = new Uint8Array(acc.byteLength + arrayBuffer.byteLength);
                         tmp.set(new Uint8Array(acc), 0);
                         tmp.set(new Uint8Array(arrayBuffer), acc.byteLength);
@@ -238,38 +208,41 @@ class Dashboard extends Component {
                 console.log('File transfer failed');
             }
         };
+        this.setState({datachannels: channel});
+        console.log("Function finished onDataChannelCreated",this.state);
     };
 
-    logError = function (err) {
+    logError (err) {
+        console.log("Function: logError")
         if (!err) return;
         if (typeof err === 'string') {
             console.warn(err);
         } else {
             console.warn(err.toString(), err);
         }
+        console.log("Function finished logError",this.state);
     }
 
-    render1 = function (blob, fileName){
-        var currentState = this.state;
-        var html = '';
+    render1 (blob, fileName){
+        console.log("Function: render1")
+        var html;
         const url = window.URL.createObjectURL(blob);
         if(url)
         {
             console.log(blob.type);
-            var downloadlink = '<a href=' + url + ' download = '+fileName+' > download now </a> ';
-            html+='<li><small>' + downloadlink + '</small></li>';
+            html = <li><small><a href={url} download={fileName}>download now</a></small></li> ;
         }
         else
         {
-            html += '<li>No files available here</li>';
+            html = <li>No files available here</li>;
         }
-        currentState.downloadList = html;
-        currentState.chunks = []
-        this.setState(currentState);
+        this.setState({downloadList: html});
+        this.setState({chunks: []});
+        console.log("Function finished render1",this.state);
     }
 
-    signalingMessageCallback = function (message, id) {
-        var currentState = this.state;
+    signalingMessageCallback (message, id) {
+        console.log("Function: signalingMessageCallback")
         if (message.type === 'offer') {
             console.log('Got offer. Sending answer to peer.');
             //console.log(message)
@@ -277,117 +250,249 @@ class Dashboard extends Component {
             //console.log(peerConn);
             //peerConn.setRemoteDescription(temp).then(() => {}).catch(logError);
             console.log(id);
-            currentState.connections[id].setRemoteDescription(new RTCSessionDescription(message), function() {},
+            this.state.connections[id].setRemoteDescription(new RTCSessionDescription(message), () => {},
                 this.logError);
-            currentState.connections[id].createAnswer().then(function(answer){
+            this.state.connections[id].createAnswer().then((answer) => {
                 this.onLocalSessionCreated(answer,id);
             }).catch(this.logError);
-            this.setState(currentState);
         } else if (message.type === 'answer') {
             console.log('Got answer.');
-            currentState.connections[id].setRemoteDescription(new RTCSessionDescription(message), function() {},
-                currentState.logError);
-            this.setState(currentState);
+            this.state.connections[id].setRemoteDescription(new RTCSessionDescription(message), () => {},
+                this.logError);
         } else if (message.type === 'candidate') {
             console.log("Candidate");
-            currentState.connections[id].addIceCandidate(new RTCIceCandidate({
+            this.state.connections[id].addIceCandidate(new RTCIceCandidate({
                 candidate: message.candidate,
                 sdpMLineIndex: message.label,
                 sdpMid: message.id
             }));
-            this.setState(currentState);
         }
+        console.log("Function finished signalingMessageCallback",this.state);
     }
 
-    onLocalSessionCreated = function (desc,id) {
-        var currentState = this.state;
+    onLocalSessionCreated (desc,id) {
+        console.log("Function: onLocalSessionCreated")
         console.log('local session created:', desc);
-        currentState.connections[id].setLocalDescription(desc).then(function() {
-            console.log('sending local desc:', currentState.connections[id].localDescription);
-            this.sendMessage(currentState.connections[id].localDescription, id);
+        this.state.connections[id].setLocalDescription(desc).then(() => {
+            console.log('sending local desc:', this.state.connections[id].localDescription);
+            this.sendMessage(this.state.connections[id].localDescription, id);
         }).catch(this.logError);
-        this.setState(currentState);
+        console.log("Function finished onLocalSessionCreated",this.state);
+    }
+
+    async sendFile(ev){
+        console.log("Function: sendFile")
+        let id = ev.target.value;
+        console.log(id);
+        // for(var i=0; i<this.state.clientList.length; i++){
+        //     if(this.state.clientId === this.state.clientList[i]) continue;
+        //     else{
+        //         id = this.state.clientList[i];
+        //     }
+        // }
+        // console.log(element);
+        // var id = element.getAttribute("id");
+        // var fileInput = document.getElementById('file')
+        var file = this.state.file;
+        console.log(file);
+
+        if(file){
+            let arrayBuffer = await file.arrayBuffer();
+            let mime = file.type;
+            let abWithMime = arrayBufferWithMime(arrayBuffer, mime)
+            console.log(arrayBuffer, mime, abWithMime);
+            let dataChannel = this.state.datachannels[id];
+            console.log('onDataChannelCreated:', dataChannel);
+            console.log(dataChannel.readyState);
+            console.log(id);
+
+            for (let i = 0; i < abWithMime.byteLength; i += MAXIMUM_MESSAGE_SIZE) {
+                //console.log(dataChannel.readyState);
+                dataChannel.send(abWithMime.slice(i, i + MAXIMUM_MESSAGE_SIZE));
+            }
+            //console.log("OUTSIDE");
+            dataChannel.send(END_OF_FILE_MESSAGE);
+            //console.log(dataChannel.readyState);
+        }
+        //fileInput.type = "text";
+        //fileInput.type = "file";
+        console.log("Function finished sendFile",this.state);
+    }
+
+    arrayBufferWithMime(arrayBuffer, mime) {
+        console.log("Function: arrayBufferWithMime")
+        const len = mime.length
+        const uint8 = new Uint8Array(len + 1)
+
+        uint8[0] = len
+
+        for (var i = 0; i < len; i++) {
+            var n = mime[i].charCodeAt(0)
+            uint8[i+1] = n
+        }
+
+        const ab = arrayBufferConcat(uint8, arrayBuffer)
+
+        console.log("Function finished arrayBufferWithMime",this.state);
+        return ab
+    }
+
+    arrayBufferMimeDecouple(arrayBufferWithMime) {
+        console.log("Function: arrayBufferMimeDecouple")
+        const uint8 = new Uint8Array(arrayBufferWithMime)
+        var mime = ''
+        const len = uint8[0]
+
+        for (var i = 0; i < len; i++) {
+            var char = uint8[i+1]
+
+            mime += String.fromCharCode(char)
+        }
+
+        var arrayBuffer = uint8.slice(len+1).buffer
+
+        console.log("Function finished arrayBufferMimeDecouple",this.state);
+        return {
+            mime: mime,
+            arrayBuffer: arrayBuffer
+        }
     }
 
     componentDidMount() {
-        let currentState = this.state;
-        if (!currentState.room) {
-            currentState.room = window.location.hash = "1";
+        // let currentState = this.state;
+        if (!this.state.room) {
+            this.state.room = window.location.hash = "1";
             //console.log("HERE"+room)
         }
-        currentState.socket = socketIOClient.connect(ENDPOINT, {reconnect: true});
-        this.setState(currentState);
+        this.state.socket = socketIOClient.connect(ENDPOINT, {reconnect: true});
 
-        currentState.socket.emit('create or join', currentState.room);
+        this.state.socket.emit('create or join', this.state.room);
 
-        currentState.socket.on('Display clients', function(clientsInRoom) {
-            currentState.clientList = clientsInRoom;
-            this.setState(currentState);
+        this.state.socket.on('Display clients', (clientsInRoom, isAllConnect) => {
+            console.log("Listener: Display Clients")
+            console.log(this.state);
+            this.setState({clientList: clientsInRoom});
             this.renderClients();
-            // this.allConnect();
+            if(isAllConnect) this.allConnect();
             //console.log(senders);
             //console.log(clientList);
+            console.log("Listener finished Display clients",this.state);
         });
 
-        // currentState.socket.on('ready', function(dest_Id){
-        //     console.log("Inside ready");
-        //     console.log(dest_Id);
-        //     this.t();
-        //     this.createPeer(dest_Id);
-        //     this.t();
-        // });
-        //
-        // currentState.socket.on('reset', function(){
-        //     window.location.reload();
-        // });
-        //
-        // currentState.socket.on('sendConnect', function(dest_Id){
-        //     currentState.dest_id = dest_Id
-        //     currentState.isInitiator = false;
-        //     this.setState(currentState);
-        //     this.t();
-        //     console.log(currentState.dest_id);
-        //     this.createPeer(currentState.dest_id);
-        //     this.t();
-        //     currentState.socket.emit('ready', currentState.dest_id, currentState.clientId);
-        //     return true;
-        // });
-        //
-        // currentState.socket.on('socketid', function(id){
-        //     currentState.clientId = id;
-        //     this.setState(currentState);
-        //     console.log("Received clientid" + currentState.clientId);
-        // });
-        //
-        // currentState.socket.on('log', function(array) {
-        //     console.log.apply(console, array);
-        // });
-        //
-        // currentState.socket.on('message', function(message, id){
-        //     console.log('Client received message:', message);
-        //     console.log(id);
-        //     this.signalingMessageCallback(message, id);
-        // });
+        this.state.socket.on('ready', (dest_Id, username) => {
+            console.log("Listener: ready")
+            console.log("Inside ready");
+            console.log(dest_Id);
+
+            console.log("dest username: ", username);
+            let users = this.state.usernames;
+            users[dest_Id] = username;
+            this.setState({usernames: users});
+
+            this.t();
+            this.createPeer(dest_Id);
+            this.t();
+            console.log("Listener finished ready",this.state);
+        });
+
+        this.state.socket.on('reset', () => {
+            console.log("Listener: reset")
+            window.location.reload();
+            console.log("Listener finished reset",this.state);
+        });
+
+        this.state.socket.on('sendConnect', (dest_Id, username) => {
+            console.log("Listener: sendConnect")
+            // console.log("Current State", currentState);
+            console.log("this State", this.state);
+
+            let users = this.state.usernames;
+            users[dest_Id] = username;
+            this.setState({usernames: users});
+
+            this.setState({dest_id: dest_Id});
+            this.setState({isInitiator: false});
+            console.log(this.state);
+            this.t();
+            console.log(this.state.dest_id);
+            this.createPeer(this.state.dest_id);
+            this.t();
+            this.state.socket.emit('ready', this.state.dest_id, this.state.clientId, this.props.login_data.login_credentials.username);
+            console.log("Listener finished sendConnect",this.state);
+            return true;
+        });
+
+        this.state.socket.on('socketid', (id) => {
+            console.log("Listener: socketid")
+            this.setState({clientId: id});
+            console.log("Received clientid" + this.state.clientId);
+            console.log("Listener finished socketid",this.state);
+        });
+
+        this.state.socket.on('log', (array) => {
+            console.log("Listener: log")
+            console.log.apply(console, array);
+            console.log("Listener finished log",this.state);
+        });
+
+        this.state.socket.on('message', (message, id) => {
+            console.log("Listener: message")
+            console.log('Client received message:', message);
+            console.log(id);
+            this.signalingMessageCallback(message, id);
+            console.log("Listener finished message",this.state);
+        });
+    }
+
+    addFile(event){
+        console.log(event.target.files[0]);
+        this.setState({file: event.target.files[0]});
+        console.log(this.state);
+    }
+
+    tmp = (event) => {
+        console.log(event);
+    }
+    createUserList() {
+        let html = [];
+        for(var i=0; i<this.state.memberList.length; i++){
+            html.push(
+                <ListGroup.Item>
+                    {this.state.usernames[this.state.memberList[i]]}<Button value={this.state.memberList[i]} onClick={(ev) => this.sendFile(ev)}>Send file</Button>
+                    {/*<Row className={"p-2"}>*/}
+                    {/*    <Col>{this.state.memberList[i]}</Col>*/}
+                    {/*    /!*<Col><Form.File onChange={(e) => {this.addFile(e)}} type={"file"} className={"custom-file-label"} label={this.state.memberList[i]} custom/></Col>*!/*/}
+                    {/*    <Col className={"justify-content-end"}><Button value={this.state.memberList[i]} onClick={(ev) => this.sendFile(ev.target.value)}/></Col>*/}
+                    {/*</Row>*/}
+                </ListGroup.Item>
+            );
+        }
+        return html;
     }
 
     render() {
+        // var memberList = <ul id="memberList">No members</ul>;
+        // if(this.state.memberList !== ""){
+        //     memberList.innerHTML = this.state.memberList;
+        // }
+        let userList = this.createUserList();
         return(
-            <div>
-                <h3>File Upload</h3>
-                <div className="container-fluid">
-                    <div className="container" id="members">
-                        <h4 id="online">{this.state.online}</h4>
-                        <ul id="memberList">{this.state.memberList}</ul>
-                    </div>
-                    {/*<div className="container" id="connect">*/}
-                    {/*       <input type="file" id="file" className="form-control">{this.state}</input>*/}
-                    {/*        <!--<button class="demo-chat-send btn btn-success" id="send" >Send</button>-->*/}
-                    {/*       <ul id="downloadList"></ul>*/}
-                    {/*</div>*/}
+            <Container className={"justify-content-center mb-5 mt-5"}>
+                <div>
+                    Users online: {this.state.online}
                 </div>
-            </div>
+                <div>
+                    {/*<FormFile onChange={(e) => {this.addFile(e)}} type={"file"} className={"custom-file-label"} label={"Select file"} custom/>*/}
+                    <FormFile onChange={(e) => {this.addFile(e)}} type={"file"} data-browse={"Select file"}/>
+                    <ul id="downloadList">{this.state.downloadList}</ul>
+                </div>
+                <ListGroup>
+                    {userList}
+                </ListGroup>
+            </Container>
         );
     }
 }
 
 export {Dashboard};
+

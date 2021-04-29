@@ -60,9 +60,9 @@ io.on('connection', function(socket) {
     io.to(clientId).emit('message', message, id);
   })
 
-  socket.on('sendConnect', function(dest_Id, clientId, room){
+  socket.on('sendConnect', function(dest_Id, clientId, room, username){
     console.log("Listener: sendConnect");
-    io.to(dest_Id).emit('sendConnect', clientId);
+    io.to(dest_Id).emit('sendConnect', clientId, username);
     //io.sockets.in(room).emit('ready', room);
     //socket.broadcast.emit('ready', room);
   })
@@ -72,10 +72,10 @@ io.on('connection', function(socket) {
     io.sockets.in(room).emit('reset');
   })
 
-  socket.on('ready', function(dest_Id, clientId){
+  socket.on('ready', function(dest_Id, clientId, username){
     console.log("Listener: ready");
     log("Ready in server");
-    io.to(dest_Id).emit('ready', clientId);
+    io.to(dest_Id).emit('ready', clientId, username);
   })
 
   socket.on('create or join', (room) => {
