@@ -3,7 +3,7 @@ name: Window-dropCI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, webapp ]
   pull_request:
     branches: [ main ]
 
