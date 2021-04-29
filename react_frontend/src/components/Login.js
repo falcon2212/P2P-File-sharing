@@ -39,7 +39,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:3080/")
+        fetch("http://localhost:3080/start")
             .then(res => res.json())
             .then((res) => {
                 this.setState({isLoaded: true,});

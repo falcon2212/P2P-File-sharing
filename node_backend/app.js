@@ -23,8 +23,13 @@ app.use(cookieParser());
 app.use(cors());
 // app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/start', indexRouter);
 app.use('/users', usersRouter);
+app.use(express.static(path.join(__dirname, "../react_frontend/build")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, '../react_frontend/build/index.html'));
+})
 
 const uri = "mongodb://127.0.0.1:27017/windrop_db";
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true});

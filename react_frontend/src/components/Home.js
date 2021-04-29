@@ -1,14 +1,13 @@
 import React, { useState, useEffect, Component } from "react";
 
-function Home() {
-    const [response, setResponse] = useState("Phuckkkkk");
-    // setResponse("Phuckkkk");
-
-    return (
-        <p>
-            It's <time dateTime={response}>{response}</time>
-        </p>
-    );
+class Home extends Component {
+    render() {
+        return (
+            <div>
+                Home of Windrop
+            </div>
+        );
+    }
 }
 
 export {Home};

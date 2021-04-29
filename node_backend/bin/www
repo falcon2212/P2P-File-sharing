@@ -86,7 +86,7 @@ io.on('connection', function(socket) {
     var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
     console.log('Room ' + room + ' now has ' + numClients + ' client(s) and socketid is' + socket.id);
 
-    if(numClients<3)
+    if(numClients<5)
     {
       socket.join(room);
       console.log("Joined Successfully");
