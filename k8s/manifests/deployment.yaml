@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: window-drop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: window-drop
+  template:
+    metadata:
+      labels:
+        app: window-drop
+    spec:
+      containers:
+      - name: backend-deployment
+        image: khalid2212/window-drop:latest
+        ports:
+        - containerPort: 3000

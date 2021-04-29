@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '../react_frontend/build/index.html'));
 })
 
-const uri = "mongodb://127.0.0.1:27017/windrop_db";
+const uri = "mongodb+srv://khalid:khalid@window-drop.fwtvj.mongodb.net/mySecondDatabase?retryWrites=true&w=majority";
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true});
 const connection = mongoose.connection;
 connection.once('open', () => {
