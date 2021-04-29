@@ -4,7 +4,7 @@ import socketIOClient from "socket.io-client";
 import {Button, Col, Container, FormFile, ListGroup, Row} from "react-bootstrap";
 import {ArrowUpSquareFill} from "react-bootstrap-icons";
 
-const ENDPOINT = "http://127.0.0.1:3080";
+const ENDPOINT = "https://window-drop.azurewebsites.net/";
 const MAXIMUM_MESSAGE_SIZE = 65535;
 const END_OF_FILE_MESSAGE = 'EOF';
 const {arrayBufferWithMime,arrayBufferMimeDecouple} = require('arraybuffer-mime');

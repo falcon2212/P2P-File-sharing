@@ -1,5 +1,5 @@
 export function validate_user(props) {
-    fetch("http://localhost:3080/users/find", {
+    fetch("https://window-drop.azurewebsites.net/users/find", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: props.user.username, password: props.user.password})

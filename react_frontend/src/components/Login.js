@@ -39,7 +39,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:3080/start")
+        fetch("https://window-drop.azurewebsites.net/start")
             .then(res => res.json())
             .then((res) => {
                 this.setState({isLoaded: true,});
@@ -52,7 +52,7 @@ class Login extends Component {
 
     handleSubmit() {
         // <validate_user user={this.state} handleValid={(n)=>{this.setState({isLoaded: true, name: n})}/>
-        fetch("http://localhost:3080/users/find", {
+        fetch("https://window-drop.azurewebsites.net/users/find", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: this.state.username, password: this.state.password})

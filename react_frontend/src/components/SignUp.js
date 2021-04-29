@@ -19,7 +19,7 @@ class SignUp extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:3080/start")
+        fetch("https://window-drop.azurewebsites.net/start")
             .then(res => res.json())
             .then((res) => {
                 this.setState({isLoaded: true,});
@@ -31,7 +31,7 @@ class SignUp extends Component {
     }
 
     handleSubmit() {
-        fetch("http://localhost:3080/users/add", {
+        fetch("https://window-drop.azurewebsites.net/users/add", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: this.state.username, password: this.state.password, email: this.state.email, name: this.state.name})
