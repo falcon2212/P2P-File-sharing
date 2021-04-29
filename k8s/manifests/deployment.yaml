@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend-deployment
+  namespace: window-drop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: window-drop
+  template:
+    metadata:
+      labels:
+        app: window-drop
+    spec:
+      containers:
+        - name: backend-deployment
+          image: nginx #'khalid2212/window-drop:latest'
+          ports:
+            - containerPort: 80
+              protocol: TCP

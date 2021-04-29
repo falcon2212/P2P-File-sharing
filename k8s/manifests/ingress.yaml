@@ -1,0 +1,50 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend-deployment
+  namespace: window-drop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: window-drop
+  template:
+    metadata:
+      labels:
+        app: window-drop
+    spec:
+      containers:
+        - name: backend-deployment
+          image: nginx #'khalid2212/window-drop:latest'
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend-service-clusterip
+  namespace: window-drop
+spec:
+  ports:
+    - port: 8088
+      targetPort: 80
+  type: ClusterIP
+  selector:
+    app: window-drop
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  namespace: window-drop
+spec:
+  rules:
+  - host: dashboard.com
+    http:
+      paths:
+        -  backend:
+            serviceName: backend-service-clusterip
+            servicePort: 8088 
+
