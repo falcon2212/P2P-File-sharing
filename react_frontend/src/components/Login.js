@@ -4,25 +4,9 @@ import "./Login.css"
 import {Button, Form} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {Redirect} from "react-router";
-// import {validate_user} from "../services/user_services";
 
-// function AfterSubmit(props) {
-//     let ret = (
-//         <Form.Group controlId={"incorrectPassword"}>
-//             <Form.Text>
-//                 Incorrect username or password
-//             </Form.Text>
-//         </Form.Group>
-//     );
-//     if(props.name !== ""){
-//         ret = (
-//             <Redirect to={"/"}/>
-//         );
-//     }
-//     return(
-//         ret
-//     );
-// }
+let APP_CONFIG = require("../config/app_config");
+const ENDPOINT = APP_CONFIG.BACKEND_ENDPOINT;
 
 class Login extends Component {
     constructor(props) {
@@ -39,7 +23,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        fetch("https://window-drop.azurewebsites.net/start")
+        fetch(ENDPOINT+"start")
             .then(res => res.json())
             .then((res) => {
                 this.setState({isLoaded: true,});
@@ -52,7 +36,7 @@ class Login extends Component {
 
     handleSubmit() {
         // <validate_user user={this.state} handleValid={(n)=>{this.setState({isLoaded: true, name: n})}/>
-        fetch("https://window-drop.azurewebsites.net/users/find", {
+        fetch(ENDPOINT+"users/find", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: this.state.username, password: this.state.password})

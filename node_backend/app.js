@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose");
 var cors = require('cors');
+let APP_CONFIG = require("./config/app_config");
 require('dotenv').config();
 
 var indexRouter = require('./routes/index');
@@ -31,7 +32,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, '../react_frontend/build/index.html'));
 })
 
-const uri = "mongodb+srv://khalid:khalid@window-drop.fwtvj.mongodb.net/mySecondDatabase?retryWrites=true&w=majority";
+const uri = APP_CONFIG.MONGO_HOST+APP_CONFIG.MONGO_DB;
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true});
 const connection = mongoose.connection;
 connection.once('open', () => {

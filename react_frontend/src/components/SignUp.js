@@ -4,6 +4,9 @@ import {Button, Col, Container, Form} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {Redirect} from "react-router";
 
+let APP_CONFIG = require("../config/app_config");
+const ENDPOINT = APP_CONFIG.BACKEND_ENDPOINT;
+
 class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +22,7 @@ class SignUp extends Component {
     }
 
     componentDidMount() {
-        fetch("https://window-drop.azurewebsites.net/start")
+        fetch(ENDPOINT+"start")
             .then(res => res.json())
             .then((res) => {
                 this.setState({isLoaded: true,});
@@ -31,7 +34,7 @@ class SignUp extends Component {
     }
 
     handleSubmit() {
-        fetch("https://window-drop.azurewebsites.net/users/add", {
+        fetch(ENDPOINT+"users/add", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: this.state.username, password: this.state.password, email: this.state.email, name: this.state.name})
