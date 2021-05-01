@@ -19,7 +19,7 @@ class Header extends Component {
             header = (
                 <Navbar bg="dark" variant="dark" expand="lg" sticky={"top"}>
                     <LinkContainer to={"/"}>
-                        <Navbar.Brand>WinDrop</Navbar.Brand>
+                        <Navbar.Brand>P2P</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -28,13 +28,13 @@ class Header extends Component {
                                 {/*<Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>*/}
                                 <Nav.Link eventKey={"home"} href={"/"}>Home</Nav.Link>
                             </LinkContainer>
-                            <LinkContainer to={"/faq"}>
-                                {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
-                                <Nav.Link eventKey={"faq"} href={"/faq"}>FAQs</Nav.Link>
-                            </LinkContainer>
                             <LinkContainer to={"/about"}>
-                                {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>About</Nav.Link>*/}
-                                <Nav.Link eventKey={"about"}>About</Nav.Link>
+                                {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
+                                <Nav.Link eventKey={"faq"} href={"/about"}>About</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer to={"/authors"}>
+                                {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
+                                <Nav.Link eventKey={"authors"}>Authors</Nav.Link>
                             </LinkContainer>
                         </Nav>
                         <Nav fill={true} className="justify-content-end">
@@ -56,7 +56,7 @@ class Header extends Component {
                 <Navbar bg="dark" variant="dark" expand="lg" sticky={"top"}>
                     {/*<Container fluid={true}>*/}
                         <LinkContainer to={"/"}>
-                            <Navbar.Brand>WinDrop</Navbar.Brand>
+                            <Navbar.Brand>P2P</Navbar.Brand>
                         </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
@@ -70,7 +70,7 @@ class Header extends Component {
                                     <Nav.Link eventKey={"faq"} href={"/faq"}>FAQs</Nav.Link>
                                 </LinkContainer>
                                 <LinkContainer to={"/about"}>
-                                    {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>About</Nav.Link>*/}
+                                    {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
                                     <Nav.Link eventKey={"about"}>About</Nav.Link>
                                 </LinkContainer>
                             </Nav>

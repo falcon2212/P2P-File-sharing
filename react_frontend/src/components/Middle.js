@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Home} from "./Home";
+import {Authors} from "./Authors";
 import {About} from "./About";
-import {FAQ} from "./FAQ";
 import {Login} from "./Login";
 import {SignUp} from "./SignUp";
 import {Dashboard} from "./Dashboard";
@@ -20,11 +20,11 @@ class Middle extends Component{
         if(this.props.middle_content === "home"){
             middle = <Home/>;
         }
+        else if(this.props.middle_content === "authors"){
+            middle = <Authors/>;
+        }
         else if(this.props.middle_content === "about"){
             middle = <About/>;
-        }
-        else if(this.props.middle_content === "faq"){
-            middle = <FAQ/>;
         }
         else if(this.props.middle_content === "login"){
             middle = <Login onReq={this.props.onReq}/>;
