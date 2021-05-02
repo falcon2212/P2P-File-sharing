@@ -6,6 +6,7 @@ import {About} from "./About";
 import {Login} from "./Login";
 import {SignUp} from "./SignUp";
 import {Dashboard} from "./Dashboard";
+import {RoomSelect} from "./RoomSelect";
 
 class Middle extends Component{
     // constructor(props) {
@@ -34,6 +35,9 @@ class Middle extends Component{
         }
         else if(this.props.middle_content === "dashboard"){
             middle = <Dashboard login_data={this.props.login_data}/>;
+        }
+        else if(this.props.middle_content === "room_select"){
+            middle = <RoomSelect onRoomChange={this.props.onRoomChange}/>;
         }
         return(
             middle

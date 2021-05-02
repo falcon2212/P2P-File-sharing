@@ -278,9 +278,14 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        if (!this.state.room) {
+        console.log(this.props.login_data.room)
+        if (this.props.login_data.room !== null) {
+            this.state.room = window.location.hash = this.props.login_data.room;
+        }
+        else {
             this.state.room = window.location.hash = "1";
         }
+
         this.state.socket = socketIOClient.connect(ENDPOINT, {reconnect: true});
 
         this.state.socket.emit('create or join', this.state.room);

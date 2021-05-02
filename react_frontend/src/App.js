@@ -15,15 +15,21 @@ class App extends Component {
         super(props);
         this.state = {
             logged_in: false,
-            login_credentials : {}
+            login_credentials : {},
+            room: null,
             // middle_content: "home"
         };
         this.handleReq = this.handleReq.bind(this);
+        this.handleRoomChange = this.handleRoomChange.bind(this);
     }
 
     handleReq(ls, lc) {
         this.setState({logged_in: ls, login_credentials: lc});
         // this.render();
+    }
+
+    handleRoomChange(r) {
+        this.setState({room: r});
     }
 
     render() {
@@ -56,6 +62,10 @@ class App extends Component {
                     <Route path={"/dashboard"}>
                         <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                         <Middle middle_content={"dashboard"} login_data={this.state}/>
+                    </Route>
+                    <Route path={"/room_select"}>
+                        <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
+                        <Middle middle_content={"room_select"} onRoomChange={(r) => this.handleRoomChange(r)}/>
                     </Route>
                 </Switch>
             </div>

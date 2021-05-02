@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
 import {Button, Jumbotron} from "react-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
 
 class Home extends Component {
     render() {
@@ -10,7 +11,9 @@ class Home extends Component {
                     This is a peer to peer file sharing app, intending to act as a medium to share files amongst personal devices.
                 </p>
                 <p>
-                    <Button variant="info" href={"/about"}>Learn more</Button>
+                    <LinkContainer to={"/about"}>
+                        <Button variant="info">Learn more</Button>
+                    </LinkContainer>
                 </p>
             </Jumbotron>
         );

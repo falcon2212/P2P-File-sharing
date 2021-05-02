@@ -26,11 +26,11 @@ class Header extends Component {
                         <Nav className="mr-auto">
                             <LinkContainer to={"/"}>
                                 {/*<Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>*/}
-                                <Nav.Link eventKey={"home"} href={"/"}>Home</Nav.Link>
+                                <Nav.Link eventKey={"home"}>Home</Nav.Link>
                             </LinkContainer>
                             <LinkContainer to={"/about"}>
                                 {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
-                                <Nav.Link eventKey={"faq"} href={"/about"}>About</Nav.Link>
+                                <Nav.Link eventKey={"about"}>About</Nav.Link>
                             </LinkContainer>
                             <LinkContainer to={"/authors"}>
                                 {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
@@ -63,15 +63,19 @@ class Header extends Component {
                             <Nav defaultActiveKey={"home"} className="mr-auto">
                                 <LinkContainer to={"/"}>
                                     {/*<Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>*/}
-                                    <Nav.Link eventKey={"home"} href={"/"}>Home</Nav.Link>
-                                </LinkContainer>
-                                <LinkContainer to={"/faq"}>
-                                    {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
-                                    <Nav.Link eventKey={"faq"} href={"/faq"}>FAQs</Nav.Link>
+                                    <Nav.Link eventKey={"home"}>Home</Nav.Link>
                                 </LinkContainer>
                                 <LinkContainer to={"/about"}>
-                                    {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
+                                    {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
                                     <Nav.Link eventKey={"about"}>About</Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to={"/authors"}>
+                                    {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
+                                    <Nav.Link eventKey={"authors"}>Authors</Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to={"/dashboard"}>
+                                    {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
+                                    <Nav.Link eventKey={"dashboard"}>Dashboard</Nav.Link>
                                 </LinkContainer>
                             </Nav>
                             <Nav fill={true} className={"justify-content-end"}>
