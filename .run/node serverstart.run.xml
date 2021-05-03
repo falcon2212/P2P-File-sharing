@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="node serverstart" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/node_backend/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="serverstart" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

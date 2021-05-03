@@ -1,5 +1,5 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: backend-deployment
   namespace: window-drop
@@ -14,8 +14,7 @@ spec:
         app: window-drop
     spec:
       containers:
-        - name: backend-deployment
-          image: nginx #'khalid2212/window-drop:latest'
-          ports:
-            - containerPort: 80
-              protocol: TCP
+      - name: backend-deployment
+        image: khalid2212/window-drop:latest
+        ports:
+        - containerPort: 3000

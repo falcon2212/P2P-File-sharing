@@ -1,12 +1,11 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: backend-service-clusterip
+  name: backend-service
   namespace: window-drop
 spec:
+  type: LoadBalancer
   ports:
-    - port: 8088
-      targetPort: 80
-  type: ClusterIP
+  - port: 80
   selector:
     app: window-drop
