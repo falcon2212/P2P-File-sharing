@@ -338,6 +338,10 @@ class Dashboard extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.state.socket.emit('final_step', this.state.room);
+    }
+
     addFile(event){
         this.setState({file: event.target.files[0]});
     }

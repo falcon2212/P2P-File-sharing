@@ -107,6 +107,22 @@ io.on('connection', function(socket) {
     }
   })
 
+  socket.on('final_step', (room) => {
+    console.log('Listener: disconnect', room);
+    let clientsInRoom = io.sockets.adapter.rooms[room];
+    let tmp = Object.keys(clientsInRoom.sockets);
+    let tmp1 = [];
+    for(var i=0; i<tmp.length; i++){
+      if(tmp[i] !== socket.id){
+        tmp1.push(tmp[i]);
+      }
+    }
+    for(var i=0; i<tmp1.length; i++){
+      console.log(tmp1[i], socket.id);
+      io.to(tmp1[i]).emit('Display clients', tmp1, false);
+    }
+  })
+
 })
 
 
