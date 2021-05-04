@@ -18,11 +18,11 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '10.x'
-    - run: npm ci
-    - name: Build the application
-      run: npm run build --if-present
-    - name: Test the application
-      run: npm test
+    # - run: npm ci
+    # - name: Build the application
+    #   run: npm run build --if-present
+    # - name: Test the application
+    #   run: npm test
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
     - name: Set up Docker Buildx
