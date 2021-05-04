@@ -43,11 +43,10 @@ jobs:
       # with:
       #   push: true
       #   tags: khalid2212/window-drop:latest
-    # - name: Deploy to Azure Kubernetes Cluster
-    #   uses: Azure/k8s-deploy@v1.4
-    #   with:
-    #     namespace: 'window-drop'
-    #     manifests: |
-    #         k8s/mainfests/deployment.yaml
-    #         k8s/mainfests/service.yaml
-    #     kubectl-version: 'latest'
+    - name: Deploy to Azure Kubernetes Cluster
+      uses: Azure/k8s-deploy@v1.4
+      with:
+        namespace: 'window-drop'
+        manifests: |
+            k8s/mainfests/deployment.yaml
+        kubectl-version: 'latest'
