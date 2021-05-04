@@ -38,7 +38,7 @@ jobs:
         docker build -t khalid2212/window-drop:latest .
     - name: Push Docker image to DockerHub
       run: |
-        docker push khalid2212/window-drop:latest .
+        docker push khalid2212/window-drop:latest
       # uses: docker/build-push-action@v2
       # with:
       #   push: true
