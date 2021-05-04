@@ -43,6 +43,11 @@ jobs:
       # with:
       #   push: true
       #   tags: khalid2212/window-drop:latest
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: SPE-Final-project
+        resource-group: SPE-Final-project      
     - name: Deploy to Azure Kubernetes Cluster
       uses: Azure/k8s-deploy@v1.4
       with:
@@ -50,3 +55,4 @@ jobs:
         manifests: |
             k8s/mainfests/deployment.yaml
         kubectl-version: 'latest'
+
