@@ -3,11 +3,13 @@ kind: Deployment
 metadata:
   name: backend-deployment
   namespace: window-drop
+  labels:
+    app: window-drop
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: window-drop
+  replicas: 2
   template:
     metadata:
       labels:
@@ -15,6 +17,6 @@ spec:
     spec:
       containers:
       - name: backend-deployment
-        image: khalid2212/window-drop:latest
+        image: vemshari27/p2p-file-sharing:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 3080
