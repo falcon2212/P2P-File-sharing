@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
       - name: backend-deployment
-        image: khalid2212/window-drop:latest
+        image: vemshari27/p2p-file-sharing:latest
         ports:
         - containerPort: 3080
