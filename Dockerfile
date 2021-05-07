@@ -1,4 +1,4 @@
-ARG DOCKER_BUILDKIT=0
+#ARG DOCKER_BUILDKIT=0
 FROM node:10
 
 # Create app directory
