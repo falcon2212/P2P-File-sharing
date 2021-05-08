@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 })
 
 const uri = APP_CONFIG.MONGO_HOST+APP_CONFIG.MONGO_DB;
-mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true});
+mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true,useUnifiedTopology: true});
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log("MongoDB connection successful");
