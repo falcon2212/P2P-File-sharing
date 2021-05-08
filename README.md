@@ -14,3 +14,4 @@ npm run serverstart
 
 ## Usage
 Go to [http://localhost:3080/]()
+#The deployed version can be accessed at [http://52.142.16.176/]()
