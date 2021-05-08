@@ -32,19 +32,23 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-    - name: Build and push
+    - name: Build Docker image
       id: docker_build
-      uses: docker/build-push-action@v2
+      run: |
+        docker build -t khalid2212/window-drop:latest .
+    - name: Push Docker image to DockerHub
+      run: |
+        docker push khalid2212/window-drop:latest
+    - uses: azure/aks-set-context@v1
       with:
-        push: true
-        tags: khalid2212/window-drop:latest
-    - name: Image digest
-      run: echo ${{ steps.docker_build.outputs.digest }}
-    # - name: Deploy to Azure Kubernetes Cluster
-    #   uses: Azure/k8s-deploy@v1.4
-    #   with:
-    #     namespace: 'window-drop'
-    #     manifests: |
-    #         k8s/mainfests/deployment.yaml
-    #         k8s/mainfests/service.yaml
-    #     kubectl-version: 'latest'
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: SPE-Final-project
+        resource-group: SPE-Final-project      
+    - name: Deploy to Azure Kubernetes Cluster
+      uses: Azure/k8s-deploy@v1.4
+      with:
+        namespace: 'window-drop'
+        manifests: |
+            k8s/mainfests/deployment.yaml
+            k8s/mainfests/service.yaml
+        kubectl-version: 'latest'
