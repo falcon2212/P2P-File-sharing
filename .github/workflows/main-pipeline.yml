@@ -3,9 +3,8 @@ name: Window-dropCI
 
 on:
   push:
-    branches: [ main, webapp ]
-  pull_request:
-    branches: [ main ]
+    branches: [ dockerTest ]
+
 
 jobs:
   CI:
