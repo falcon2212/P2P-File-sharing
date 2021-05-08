@@ -11,7 +11,7 @@ class Tmp extends Component {
 
     componentDidMount() {
         console.log('I was triggered during componentDidMount')
-        fetch("https://window-drop.azurewebsites.net/")
+        fetch("http://localhost:3080/")
             .then(res => res.json())
             .then((res) => {
                 this.setState({isLoaded: true,});
