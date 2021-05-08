@@ -35,7 +35,7 @@ jobs:
     - name: Build Docker image
       id: docker_build
       run: |
-        docker build -t khalid2212/window-drop:latest .
+        docker build . -t khalid2212/window-drop:latest
     - name: Push Docker image to DockerHub
       run: |
         docker push khalid2212/window-drop:latest
