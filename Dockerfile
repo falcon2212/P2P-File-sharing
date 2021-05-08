@@ -1,5 +1,5 @@
-#ARG DOCKER_BUILDKIT=0
-FROM node:10
+ARG DOCKER_BUILDKIT=0
+FROM node:10.19.0
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -18,7 +18,10 @@ COPY . .
 # RUN  systemctl enable mongod
 # RUN  systemctl start mongod
 WORKDIR /usr/src/app/node_backend
+
 RUN npm install
 
 EXPOSE 3080
+
 CMD [ "npm", "run", "serverstart" ]
+
