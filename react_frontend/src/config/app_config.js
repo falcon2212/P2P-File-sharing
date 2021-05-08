@@ -1,4 +1,6 @@
+// Uncomment whichever endpoint you want
 
-module.exports = {
-    BACKEND_ENDPOINT: "http://127.0.0.1:3080/",
-}
+// Azure deployed
+// module.exports = {
+//     BACKEND_ENDPOINT: "https://window-drop.azurewebsites.net/",
+// }

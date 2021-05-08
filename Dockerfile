@@ -1,3 +1,5 @@
+
+ARG DOCKER_BUILDKIT=0
 FROM node:10.19.0
 
 # Create app directory
@@ -23,3 +25,4 @@ RUN npm install
 EXPOSE 3080
 
 CMD [ "npm", "run", "serverstart" ]
+

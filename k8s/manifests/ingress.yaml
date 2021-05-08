@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  namespace: window-drop
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: backend-service-clusterip
+          servicePort: 80
