@@ -15,4 +15,4 @@ npm run serverstart
 ## Usage
 Go to [http://localhost:3080/]()
 
-The deployed version can be accessed at http://52.142.16.176/
+The deployed version can be accessed at https://backend-service-falcon2212.cloud.okteto.net/
