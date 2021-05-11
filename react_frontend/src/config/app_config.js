@@ -1,6 +1,11 @@
 // Uncomment whichever endpoint you want
 
-// Azure deployed
+// backend service
+module.exports = {
+    BACKEND_ENDPOINT: "https://backend-service-falcon2212.cloud.okteto.net/",
+}
+
 // module.exports = {
-//     BACKEND_ENDPOINT: "https://window-drop.azurewebsites.net/",
+//     BACKEND_ENDPOINT: "http://localhost:3080/",
 // }
+    

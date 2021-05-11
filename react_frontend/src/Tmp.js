@@ -11,7 +11,7 @@ class Tmp extends Component {
 
     componentDidMount() {
         console.log('I was triggered during componentDidMount')
-        fetch("http://localhost:3080/")
+        fetch("https://backend-service-falcon2212.cloud.okteto.net/")
             .then(res => res.json())
             .then((res) => {
                 this.setState({isLoaded: true,});

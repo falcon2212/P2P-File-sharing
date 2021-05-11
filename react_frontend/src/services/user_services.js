@@ -1,5 +1,5 @@
 export function validate_user(props) {
-    fetch("https://localhost:3080/users/find", {
+    fetch("https://backend-service-falcon2212.cloud.okteto.net/users/find", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username: props.user.username, password: props.user.password})
