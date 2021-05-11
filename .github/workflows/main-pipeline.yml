@@ -27,5 +27,17 @@ jobs:
     - name: Push Docker image to DockerHub
       run: |
         docker push khalid2212/window-drop:latest
+    - uses: okteto/login@master
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+    
+    - name: "Activate personal namespace"
+      uses: okteto/namespace@master
+      with:
+        name: falcon2212
 
+    - name: "Create deployment"
+      uses: okteto/apply@master
+      with:
+        manifest: ./k8s/manifests/deployment.yaml
 

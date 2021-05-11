@@ -19,65 +19,65 @@
 #       port: 443
 #       targetPort: https
 # ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: public-svc
-  namespace:  window-drop
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-  selector:
-    app: public-app
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend-deployment
-  namespace: window-drop
-  labels:
-    app: window-drop
-spec:
-  selector:
-    matchLabels:
-      app: window-drop
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: window-drop
-    spec:
-      containers:
-      - name: backend-deployment
-        image: vemshari27/p2p-file-sharing:latest
-        ports:
-        - containerPort: 3080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend-service-clusterip
-  namespace: window-drop
-spec:
-  selector:
-    app: window-drop
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 3080
-  type: ClusterIP
----
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: backend-ingress
-  namespace: window-drop
-spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: backend-service-clusterip
-          servicePort: 80
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: public-svc
+#   namespace:  window-drop
+# spec:
+#   type: LoadBalancer
+#   ports:
+#   - port: 80
+#   selector:
+#     app: public-app
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: backend-deployment
+#   namespace: window-drop
+#   labels:
+#     app: window-drop
+# spec:
+#   selector:
+#     matchLabels:
+#       app: window-drop
+#   replicas: 2
+#   template:
+#     metadata:
+#       labels:
+#         app: window-drop
+#     spec:
+#       containers:
+#       - name: backend-deployment
+#         image: vemshari27/p2p-file-sharing:latest
+#         ports:
+#         - containerPort: 3080
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: backend-service-clusterip
+#   namespace: window-drop
+# spec:
+#   selector:
+#     app: window-drop
+#   ports:
+#     - port: 80
+#       protocol: TCP
+#       targetPort: 3080
+#   type: ClusterIP
+# ---
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: backend-ingress
+#   namespace: window-drop
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - path: /
+#         backend:
+#           serviceName: backend-service-clusterip
+#           servicePort: 80
