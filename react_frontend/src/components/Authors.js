@@ -13,10 +13,10 @@ class Authors extends Component {
                                 <Nav.Link eventKey="first">Srihari Vemuru</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="second">Mohammad Khalid</Nav.Link>
+                                <Nav.Link eventKey="second">Sushranth Hebbar</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="third">Sushranth Hebbar</Nav.Link>
+                                <Nav.Link eventKey="third">Mohammad Khalid</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Col>
