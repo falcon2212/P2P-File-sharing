@@ -16,6 +16,7 @@ class App extends Component {
         this.state = {
             logged_in: false,
             login_credentials : {},
+            device:null,
             room: null,
             // middle_content: "home"
         };
@@ -26,6 +27,10 @@ class App extends Component {
     handleReq(ls, lc) {
         this.setState({logged_in: ls, login_credentials: lc});
         // this.render();
+    }
+
+    handleDeviceChange(d){
+        this.setState({device: d})
     }
 
     handleRoomChange(r) {
@@ -66,6 +71,10 @@ class App extends Component {
                     <Route path={"/room_select"}>
                         <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
                         <Middle middle_content={"room_select"} onRoomChange={(r) => this.handleRoomChange(r)}/>
+                    </Route>
+                    <Route path={"/device_select"}>
+                        <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
+                        <Middle middle_content={"device_select"} login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)} onDeviceChange={(d) => this.handleDeviceChange(d)} onRoomChange={(r) => this.handleRoomChange(r)}/>
                     </Route>
                 </Switch>
             </div>

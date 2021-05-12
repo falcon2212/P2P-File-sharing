@@ -25,7 +25,10 @@ const userSchema = new Schema({
             type: String,
             required: true,
             trim: true,
-        }
+        },
+        devices: [{
+            type: String,
+        }]
     }, {
         timestamps: true,
     }

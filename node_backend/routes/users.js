@@ -48,11 +48,28 @@ router.route('/update/:id').post((req, res) => {
         user.username = req.body.username;
         user.email = req.body.email;
         user.password = req.body.password;
+        user.name = req.body.name;
+        user.devices = req.body.devices;
         user.save()
             .then(() => res.json("User updated"))
             .catch(err => res.status(400).json('Error: '+err));
       })
       .catch(err => res.status(400).json('Error: '+err));
+});
+
+router.route('/update_devices/:id').post((req, res) => {
+    const id = req.params.id;
+    console.log("Phuckkk");
+    console.log(id);
+    User.findById(id)
+        .then(user => {
+            console.log(user, req.body);
+            user.devices = req.body.devices;
+            user.save()
+                .then((user) => {console.log(user);res.json(user)})
+                .catch(err => res.status(400).json('Error: '+err));
+        })
+        .catch(err => res.status(400).json('Error: '+err));
 });
 
 module.exports = router;

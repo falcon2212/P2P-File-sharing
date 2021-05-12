@@ -50,7 +50,7 @@ class Login extends Component {
                     }
                     else if (res.name !== "") {
                         console.log(res);
-                        this.props.onReq(true, {username: this.state.username, name: res.name});
+                        this.props.onReq(true, {username: this.state.username, name: res.name, user_id: res._id, devices: res.devices});
                         this.setState({name: res.name});
                     }
                 })
@@ -73,7 +73,7 @@ class Login extends Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else if(name !== ""){
-            return <Redirect to={"/room_select"}/>;
+            return <Redirect to={"/device_select"}/>;
         }
         else {
             {/*TODO: isLoaded error handling*/}
