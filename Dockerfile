@@ -18,6 +18,9 @@ COPY . /usr/src/app
 # RUN  apt install mongodb-org
     # RUN  systemctl enable mongod
 # RUN  systemctl start mongod
+WORKDIR /usr/src/app/react_frontend
+RUN npm install
+RUN npm run build
 WORKDIR /usr/src/app/node_backend
 
 RUN npm install
