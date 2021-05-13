@@ -49,7 +49,7 @@ class SignUp extends Component {
                     }
                     else{
                         console.log(res);
-                        this.props.onReq(true, {username: this.state.username, name: res.name, user_id: res._id, devices: res.devices});
+                        this.props.onReq(true, {username: this.state.username, name: this.state.name, user_id: res._id, devices: []});
                         this.setState({isSubmitted: true});
                     }
                 })
@@ -74,7 +74,7 @@ class SignUp extends Component {
             return <div>Loading...</div>;
         }
         else if(isSubmitted){
-            return <Redirect to={"/room_select"}/>;
+            return <Redirect to={"/device_select"}/>;
         }
         else {
             return (

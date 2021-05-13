@@ -14,6 +14,10 @@ const sessionsSchema = new Schema({
     device: {
         type: String,
         required: true,
+    },
+    room: {
+        type: String,
+        required: true,
     }
 });
 

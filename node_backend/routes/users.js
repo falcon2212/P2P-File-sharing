@@ -30,7 +30,7 @@ router.route('/add').post((req, res) => {
   const name = req.body.name;
   const newUser = new User({username, email, password, name});
   newUser.save()
-      .then(() => res.json("User added."))
+      .then((user) => res.json(user))
       .catch(err => res.status(400).json('Error: '+err));
 });
 // Delete

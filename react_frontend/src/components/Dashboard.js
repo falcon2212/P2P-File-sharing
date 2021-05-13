@@ -36,25 +36,28 @@ class Dashboard extends Component {
             socket:null,
             downloadList:null,
             usernames:{},
+            username:this.props.login_data.login_credentials.username,
+            device:this.props.login_data.login_credentials.device,
+            online_users:[],
         };
     }
 
     renderClients (){
-        var onlineUsers = ((this.state.clientList.length === 0) ? 0 : (this.state.clientList.length - 1) );
+        var onlineUsers = ((this.state.online_users.length === 0) ? 0 : (this.state.online_users.length - 1) );
 
         this.setState({online: onlineUsers});
 
         var html = [];
-        if(this.state.clientList.length === 1)
+        if(this.state.online_users.length === 1)
         {
             this.setState({memberList: html});
             return;
         }
 
-        for(var i=0; i<this.state.clientList.length; i++)
+        for(var i=0; i<this.state.online_users.length; i++)
         {
-            var element = this.state.clientList[i];
-            if(element === this.state.clientId) continue;
+            var element = this.state.online_users[i];
+            if(element.clientId === this.state.clientId) continue;
             html.push(element);
             this.setState({memberList: html});
 
@@ -64,15 +67,15 @@ class Dashboard extends Component {
     allConnect (){
         this.setState({connections: {}});
         this.setState({datachannels: {}});
-        for(let i = 0;i<this.state.clientList.length;i++){
-            var element = this.state.clientList[i];
-            if(element === this.state.clientId) continue;
+        for(let i = 0;i<this.state.online_users.length;i++){
+            var element = this.state.online_users[i];
+            if(element.clientId === this.state.clientId) continue;
             this.sendConnect(element);
         }
     }
 
-    async sendConnect (id){
-        this.setState({dest_id: id});
+    async sendConnect (element){
+        this.setState({dest_id: element.clientId});
         this.setState({isInitiator: true});
         this.state.socket.emit('sendConnect', this.state.dest_id, this.state.clientId, this.state.room, this.props.login_data.login_credentials.username);
         return true;
@@ -279,19 +282,22 @@ class Dashboard extends Component {
 
     componentDidMount() {
         console.log(this.props.login_data.room)
-        if (this.props.login_data.room !== null) {
-            this.state.room = window.location.hash = this.props.login_data.room;
-        }
-        else {
-            this.state.room = window.location.hash = "1";
-        }
+        // if (this.props.login_data.room !== null) {
+        //     this.state.room = window.location.hash = this.props.login_data.room;
+        // }
+        // else {
+        //     this.state.room = window.location.hash = "1";
+        // }
 
         this.state.socket = socketIOClient.connect(ENDPOINT, {reconnect: true});
 
-        this.state.socket.emit('create or join', this.state.room);
+        this.state.socket.emit('create or join', this.state.username, this.state.device);
 
-        this.state.socket.on('Display clients', (clientsInRoom, isAllConnect) => {
-            this.setState({clientList: clientsInRoom});
+        this.state.socket.on('Display clients', (users, isAllConnect) => {
+            this.setState({online_users: users});
+            if(isAllConnect){
+                this.state.room = window.location.hash = users[0]
+            }
             this.renderClients();
             if(isAllConnect) this.allConnect();
         });

@@ -35,7 +35,7 @@ class Middle extends Component{
             middle = <SignUp onReq={this.props.onReq}/>;
         }
         else if(this.props.middle_content === "dashboard"){
-            middle = <Dashboard login_data={this.props.login_data}/>;
+            middle = <Dashboard login_data={this.props.login_data} onRoomChange={this.props.onRoomChange}/>;
         }
         else if(this.props.middle_content === "room_select"){
             middle = <RoomSelect onRoomChange={this.props.onRoomChange}/>;

@@ -9,6 +9,8 @@ var debug = require('debug')('node-backend:server');
 var http = require('http');
 const socketIo = require("socket.io");
 
+let Sessions = require('../models/session.model');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -78,9 +80,20 @@ io.on('connection', function(socket) {
     io.to(dest_Id).emit('ready', clientId, username);
   })
 
-  socket.on('create or join', (room) => {
+  socket.on('create or join', async (uname, dev) => {
     console.log("Listener: create or join");
     // log('Received request to create or join room ' + room);
+
+    let room;
+    let users = await Sessions.find({username: uname});
+    if(users.length !==0){
+      room = users[0].room;
+    }
+    else{
+      room = Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+    }
+
+
     console.log('Received request to create or join room ' + room);
     var clientsInRoom = io.sockets.adapter.rooms[room];
     var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
@@ -93,7 +106,7 @@ io.on('connection', function(socket) {
       socket.emit('socketid', socket.id);
       clientsInRoom = io.sockets.adapter.rooms[room];
       let tmp = Object.keys(clientsInRoom.sockets);
-      socket.emit('Display clients', Object.keys(clientsInRoom.sockets), true);
+      socket.emit('Display clients', users, true);
       for(var i=0; i<tmp.length; i++){
         console.log(tmp[i], socket.id);
         if(tmp[i] !== socket.id) {

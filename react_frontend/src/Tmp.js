@@ -1,32 +1,20 @@
 import React, {Component} from 'react';
+import {ListGroup} from "react-bootstrap";
 
 class Tmp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoaded: false,
-            error: null,
-        };
+    handleSelect(event){
+        console.log(event);
     }
-
-    componentDidMount() {
-        console.log('I was triggered during componentDidMount')
-        fetch("https://backend-service-falcon2212.cloud.okteto.net/")
-            .then(res => res.json())
-            .then((res) => {
-                this.setState({isLoaded: true,});
-                console.log(res);
-            })
-            .catch((err)=>{
-                this.setState({isLoaded: true, error: err});
-                console.log('fuck')
-                console.log(err);
-            });
-    }
-
     render(){
+        let l = ["hello", "hi"];
+        let h = [];
+        for(var i=0; i<2; i++){
+            h.push(<ListGroup.Item eventKey={l[i]} variant={"info"}>{l[i]}</ListGroup.Item>);
+        }
         return(
-            <h1>Check console</h1>
+            <ListGroup onSelect={this.handleSelect.bind(this)}>
+                {h}
+            </ListGroup>
         );
     }
 }
