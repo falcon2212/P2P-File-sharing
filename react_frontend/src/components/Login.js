@@ -51,6 +51,7 @@ class Login extends Component {
                     else if (res.name !== "") {
                         console.log(res);
                         this.props.onReq(true, {username: this.state.username, name: res.name, user_id: res._id, devices: res.devices});
+                        this.props.onRoomChange(res.room);
                         this.setState({name: res.name});
                     }
                 })

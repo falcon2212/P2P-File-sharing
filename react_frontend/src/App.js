@@ -58,11 +58,11 @@ class App extends Component {
                     </Route>
                     <Route path={"/login"}>
                         <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
-                        <Middle middle_content={"login"} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
+                        <Middle middle_content={"login"} onReq={(ls, lc) => this.handleReq(ls, lc)} onRoomChange={(r) => this.handleRoomChange(r)}/>
                     </Route>
                     <Route path={"/sign_up"}>
                         <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
-                        <Middle middle_content={"sign_up"} onReq={(ls, lc) => this.handleReq(ls, lc)}/>
+                        <Middle middle_content={"sign_up"} onReq={(ls, lc) => this.handleReq(ls, lc)} onRoomChange={(r) => this.handleRoomChange(r)}/>
                     </Route>
                     <Route path={"/dashboard"}>
                         <Header login_data={this.state} onReq={(ls, lc) => this.handleReq(ls, lc)}/>

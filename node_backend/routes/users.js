@@ -28,9 +28,10 @@ router.route('/add').post((req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const name = req.body.name;
-  const newUser = new User({username, email, password, name});
+  const room = Math.floor((1 + Math.random()) * 1e16).toString(16).substring(1);
+  const newUser = new User({username, email, password, name, room});
   newUser.save()
-      .then(() => res.json("User added."))
+      .then(() => res.json(newUser))
       .catch(err => res.status(400).json('Error: '+err));
 });
 // Delete

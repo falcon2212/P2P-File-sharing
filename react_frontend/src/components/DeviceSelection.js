@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Login.css"
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, ListGroup} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {Redirect} from "react-router";
 
@@ -41,7 +41,6 @@ class DeviceSelection extends Component {
                         console.log(res);
                         this.props.onReq(true, {username: res.username, name: res.name, user_id: res._id, devices: res.devices});
                         this.props.onDeviceChange(this.state.device);
-                        this.props.onRoomChange("1");
                         this.setState({transaction: true});
                     }
                 }
@@ -58,26 +57,64 @@ class DeviceSelection extends Component {
         this.setState({[fieldName]: fieldVal});
     }
 
+    handleSelect(event){
+        this.props.onDeviceChange(event);
+        this.setState({transaction: true});
+    }
+
     render() {
+        let h;
         if(this.state.transaction){
+            console.log(this.state);
             return <Redirect to={"/dashboard"}/>;
         }
         else {
-            return (
-                <Form className={"form-global"}>
-                    <h3>New device?</h3>
-                    <Form.Group controlId="formBasicDevice">
-                        <Form.Label>Device name</Form.Label>
-                        <Form.Control type={"text"} name={"device"}
-                                      onChange={this.handleChange.bind(this)}/>
-                    </Form.Group>
+            if(this.props.login_data.login_credentials.devices.length === 0){
+                h = (
+                    <div className={"form-global"}>
+                        <Form>
+                            <h3>New device?</h3>
+                            <Form.Group controlId="formBasicDevice">
+                                <Form.Label>Device name</Form.Label>
+                                <Form.Control type={"text"} name={"device"}
+                                              onChange={this.handleChange.bind(this)}/>
+                            </Form.Group>
 
-                    <Button variant="primary" onClick={() => this.handleSubmit()}>
-                        Register
-                    </Button>
-                </Form>
-            );
+                            <Button variant="primary" onClick={() => this.handleSubmit()}>
+                                Register
+                            </Button>
+                        </Form>
+                    </div>
+                );
+            }
+            else{
+                let device_list = [];
+                for(var i=0; i<this.props.login_data.login_credentials.devices.length; i++){
+                    device_list.push(<ListGroup.Item eventKey={this.props.login_data.login_credentials.devices[i]}>{this.props.login_data.login_credentials.devices[i]}</ListGroup.Item>);
+                }
+                h = (
+                    <div className={"form-global"}>
+                        <h3>Which device is this?</h3>
+                        <ListGroup onSelect={this.handleSelect.bind(this)}>{device_list}</ListGroup>
+                        <Form>
+                            <h3>New device?</h3>
+                            <Form.Group controlId="formBasicDevice">
+                                <Form.Label>Device name</Form.Label>
+                                <Form.Control type={"text"} name={"device"}
+                                              onChange={this.handleChange.bind(this)}/>
+                            </Form.Group>
+
+                            <Button variant="primary" onClick={() => this.handleSubmit()}>
+                                Register
+                            </Button>
+                        </Form>
+                    </div>
+                );
+            }
         }
+        return (
+            h
+        );
     }
 }
 

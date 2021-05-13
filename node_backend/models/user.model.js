@@ -28,7 +28,10 @@ const userSchema = new Schema({
         },
         devices: [{
             type: String,
-        }]
+        }],
+        room: {
+            type: String,
+        }
     }, {
         timestamps: true,
     }

@@ -74,7 +74,7 @@ class Dashboard extends Component {
     async sendConnect (id){
         this.setState({dest_id: id});
         this.setState({isInitiator: true});
-        this.state.socket.emit('sendConnect', this.state.dest_id, this.state.clientId, this.state.room, this.props.login_data.login_credentials.username);
+        this.state.socket.emit('sendConnect', this.state.dest_id, this.state.clientId, this.state.room, this.props.login_data.device);
         return true;
     }
 
@@ -322,7 +322,7 @@ class Dashboard extends Component {
             this.t();
             this.createPeer(this.state.dest_id);
             this.t();
-            this.state.socket.emit('ready', this.state.dest_id, this.state.clientId, this.props.login_data.login_credentials.username);
+            this.state.socket.emit('ready', this.state.dest_id, this.state.clientId, this.props.login_data.device);
             return true;
         });
 
