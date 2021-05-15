@@ -67,7 +67,7 @@ describe("users api", function(){
     })*/
 
     describe("login", function(){
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725/users/find/";
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/find/";
 
         it("returns status 200", function(done){
             request({
