@@ -101,7 +101,27 @@ describe("users api", function(){
 
     })
 
-    describe("update devices", function(done){
+    describe("update users", function(){
+
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/update/609fbeb03abf800041dc61fe";
+
+        it("returns status 200", function(done){
+
+            request({
+                url : url,
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body:{username:"Test1", password:"Test", email:"Test1@gmail.com", name: "Test1", devices: ["Test", "Test1"]},
+                json:true,
+            },function(error, response, body){
+                console.log(body);
+                expect(response.statusCode).to.equal(200);
+            })
+            done();
+        })
+    })
+
+    describe("update devices", function(){
 
         var url = "https://backend-service-falcon2212.cloud.okteto.net/users/update_devices/609fbeb03abf800041dc61fe"
 
