@@ -7,16 +7,16 @@ describe("users api", function(){
 
         var url = "https://backend-service-falcon2212.cloud.okteto.net/";
 
-        it("returns status 200", function(){
+        it("returns status 200", function(done){
             request(url, function(error, response, body){
                 //console.log(body)
                 expect(response.statusCode).to.equal(200);
-                //done();
+                done();
             })
         })
     })
 
-    /*describe("sign up", function(){
+    describe("sign up", function(){
         var url = "https://backend-service-falcon2212.cloud.okteto.net/users/add";
 
         it("returns status 200", function(){
@@ -36,9 +36,9 @@ describe("users api", function(){
     })
 
     describe("delete user",function(){
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609fb58d3abf800041dc61f3";
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725";
 
-        it("returns status 200", function(){
+        it("returns status 200", function(done){
             request({
                 url: url,
                 method: "DELETE",
@@ -46,19 +46,22 @@ describe("users api", function(){
                 //console.log(body)
                 //console.log(error)
                 expect(response.statusCode).to.equal(200);
+                done();
             })
         })
-    })*/
+    })
 
     describe("find user", function(){
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609fb58d3abf800041dc61f3";
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725";
 
-        it("returns status 200", function(){
+        it("returns status 200", function(done){
             request({
                 url: url,
                 method: "GET",
             }, function(error, response, body){
                 console.log(body);
+                expect(response.statusCode).to.equal(200);
+                done();
             })
         })
     })
