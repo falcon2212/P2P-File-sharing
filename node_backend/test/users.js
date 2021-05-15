@@ -36,13 +36,13 @@ describe("users api", function(){
             done();
         })
 
-        /*it("new user", function(done){
+        it("new user", function(done){
             //request.post(url).send({username:"Test", password:"Test", email:"Test@gmail.com", name: "Test"}).expect(200);
             request({
                 url: url, 
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
-                body:{username:"test3", password:"test3", email:"test3@gmail.com", name: "test3"},
+                body:{username:"test30", password:"test30", email:"test30@gmail.com", name: "test30"},
                 json:true,
             },function(error, response, body){
                 //console.log(body);
@@ -54,7 +54,7 @@ describe("users api", function(){
                 expect(response.statusCode).to.equal(200);
             })
             done();
-        })*/
+        })
     })
 
     describe("login", function(){
@@ -74,19 +74,19 @@ describe("users api", function(){
             })
         })
 
-        /*it("new login", function(done){
+        it("new login", function(done){
             request({
                 url: url,
                 method: "POST",
                 headers: {'Content-Type': 'application/json'},
-                body: {username: "test3", password: "test3"},
+                body: {username: "test30", password: "test30"},
                 json: true
             }, function(error, response, body){
                 //console.log(body);
                 expect(response.statusCode).to.equal(200);
                 done();
             })
-        })*/
+        })
 
     })
 
@@ -121,7 +121,7 @@ describe("users api", function(){
             })
         })
 
-        /*it("new find", function(done){
+        it("new find", function(done){
             var url = "https://backend-service-falcon2212.cloud.okteto.net/users/".concat(id);
             //console.log(url)
             request({
@@ -133,7 +133,7 @@ describe("users api", function(){
                 expect(response.statusCode).to.equal(200);
                 done();
             })
-        })*/
+        })
 
     })
 
@@ -209,7 +209,7 @@ describe("users api", function(){
 
     })
 
-    /*describe("delete user",function(){
+    describe("delete user",function(){
         //var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609fe6363abf800041dc6244" ;
         //url = url + id;
         //console.log(url);
@@ -229,5 +229,5 @@ describe("users api", function(){
                 done();
             })
         })
-    })*/
+    })
 })
