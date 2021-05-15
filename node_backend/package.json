@@ -11,6 +11,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "chai": "^4.3.4",
+    "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -21,6 +22,7 @@
     "mocha": "^8.4.0",
     "mongoose": "^5.12.3",
     "morgan": "~1.9.1",
+    "morgan-body": "^2.6.5",
     "node-static": "^0.7.11",
     "request": "^2.88.2",
     "socket.io": "^2.0.4",

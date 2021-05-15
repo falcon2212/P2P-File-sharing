@@ -8,4 +8,3 @@ module.exports = {
 // module.exports = {
 //     BACKEND_ENDPOINT: "http://localhost:3080/",
 // }
-    

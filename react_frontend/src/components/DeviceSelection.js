@@ -29,7 +29,7 @@ class DeviceSelection extends Component {
         fetch(ENDPOINT+"users/update_devices/"+this.props.login_data.login_credentials.user_id, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({devices: d})
+            body: JSON.stringify({username: this.props.login_data.login_credentials.username, devices: d})
         })
             .then(res => res.json())
             .then(
