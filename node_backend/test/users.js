@@ -121,14 +121,27 @@ describe("users api", function(){
             })
         })
 
+        it("new find", function(done){
+            var url = "https://backend-service-falcon2212.cloud.okteto.net/users/".concat(id);
+            //console.log(url)
+            request({
+                url: url,
+                method: "GET",
+
+            }, function(error, response, body){
+                console.log(body);
+                expect(response.statusCode).to.equal(200);
+                done();
+            })
+        })
+
     })
 
     describe("update users", function(){
 
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/update/609fbeb03abf800041dc61fe";
-
+        
         it("returns status 200", function(done){
-
+            var url = "https://backend-service-falcon2212.cloud.okteto.net/users/update/609fbeb03abf800041dc61fe";
             request({
                 url : url,
                 method: "POST",
