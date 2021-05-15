@@ -73,6 +73,21 @@ describe("users api", function(){
                 done();
             })
         })
+
+        it("new login", function(done){
+            request({
+                url: url,
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: {username: "test3", password: "test3"},
+                json: true
+            }, function(error, response, body){
+                //console.log(body);
+                expect(response.statusCode).to.equal(200);
+                done();
+            })
+        })
+
     })
 
     describe("find user", function(){
