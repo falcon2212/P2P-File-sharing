@@ -18,7 +18,6 @@ router.route('/find').post((req, res) => {
     User.findOne({username: req.body.username, password: req.body.password})
         .then(user => {
             res.json(user);
-            console.log(user);
         })
         .catch(err => res.status(400).json('Error: '+err));
 });
@@ -60,14 +59,11 @@ router.route('/update/:id').post((req, res) => {
 
 router.route('/update_devices/:id').post((req, res) => {
     const id = req.params.id;
-    console.log("Phuckkk");
-    console.log(id);
     User.findById(id)
         .then(user => {
-            console.log(user, req.body);
             user.devices = req.body.devices;
             user.save()
-                .then((user) => {console.log(user);res.json(user)})
+                .then((user) => {res.json(user)})
                 .catch(err => res.status(400).json('Error: '+err));
         })
         .catch(err => res.status(400).json('Error: '+err));
