@@ -50,22 +50,6 @@ describe("users api", function(){
         })*/
     })
 
-    /*describe("delete user",function(){
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725";
-
-        it("returns status 200", function(done){
-            request({
-                url: url,
-                method: "DELETE",
-            }, function(error, response, body){
-                //console.log(body)
-                //console.log(error)
-                expect(response.statusCode).to.equal(200);
-                done();
-            })
-        })
-    })*/
-
     describe("login", function(){
         var url = "https://backend-service-falcon2212.cloud.okteto.net/users/find/";
 
@@ -77,7 +61,7 @@ describe("users api", function(){
                 body: {username: "sush", password: "sush"},
                 json: true
             }, function(error, response, body){
-                console.log(body);
+                //console.log(body);
                 expect(response.statusCode).to.equal(200);
                 done();
             })
@@ -112,4 +96,41 @@ describe("users api", function(){
         })
     })
 
+    describe("update devices", function(done){
+
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/update_devices/609fbeb03abf800041dc61fe"
+
+        it("returns status 200", function(done){
+
+            request({
+                url: url, 
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body:{devices: "Test"},
+                json:true,
+            },function(error, response, body){
+                //console.log(body);
+                expect(response.statusCode).to.equal(200);
+            })
+            done();
+
+        })
+
+    })
+
+    /*describe("delete user",function(){
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725";
+
+        it("returns status 200", function(done){
+            request({
+                url: url,
+                method: "DELETE",
+            }, function(error, response, body){
+                //console.log(body)
+                //console.log(error)
+                expect(response.statusCode).to.equal(200);
+                done();
+            })
+        })
+    })*/
 })
