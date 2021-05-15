@@ -34,7 +34,7 @@ describe("users api", function(){
             done();
         })
 
-        it("returns status 200", function(done){
+        /*it("returns status 200", function(done){
             //request.post(url).send({username:"Test", password:"Test", email:"Test@gmail.com", name: "Test"}).expect(200);
             request({
                 url: url, 
@@ -47,7 +47,7 @@ describe("users api", function(){
                 expect(response.statusCode).to.equal(200);
             })
             done();
-        })
+        })*/
     })
 
     /*describe("delete user",function(){
@@ -67,17 +67,17 @@ describe("users api", function(){
     })*/
 
     describe("login", function(){
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725/users/find";
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725/users/find/";
 
         it("returns status 200", function(done){
             request({
                 url: url,
-                method: "GET",
+                method: "POST",
                 headers: {'Content-Type': 'application/json'},
                 body: {username: "sush", password: "sush"},
                 json: true
             }, function(error, response, body){
-                //console.log(body);
+                console.log(body);
                 expect(response.statusCode).to.equal(200);
                 done();
             })
@@ -95,6 +95,18 @@ describe("users api", function(){
             }, function(error, response, body){
                 //console.log(body);
                 expect(response.statusCode).to.equal(200);
+                done();
+            })
+        })
+
+        it("returns status 404", function(done){
+            request({
+                url: url,
+                method: "POST",
+
+            }, function(error, response, body){
+                //console.log(body);
+                expect(response.statusCode).to.equal(404);
                 done();
             })
         })
