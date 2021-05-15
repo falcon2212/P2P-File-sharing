@@ -16,20 +16,6 @@ describe("users api", function(){
         })
     })
 
-    describe("delete user",function(){
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609fb58d3abf800041dc61f3";
-
-        it("returns status 200", function(){
-            request({
-                url: url,
-                method: "DELETE",
-            }, function(error, response, body){
-                console.log(body)
-                console.log(error)
-            })
-        })
-    })
-    
     /*describe("sign up", function(){
         var url = "https://backend-service-falcon2212.cloud.okteto.net/users/add";
 
@@ -47,6 +33,34 @@ describe("users api", function(){
             })
             //done();
         })
+    })
+
+    describe("delete user",function(){
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609fb58d3abf800041dc61f3";
+
+        it("returns status 200", function(){
+            request({
+                url: url,
+                method: "DELETE",
+            }, function(error, response, body){
+                //console.log(body)
+                //console.log(error)
+                expect(response.statusCode).to.equal(200);
+            })
+        })
     })*/
+
+    describe("find user", function(){
+        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609fb58d3abf800041dc61f3";
+
+        it("returns status 200", function(){
+            request({
+                url: url,
+                method: "GET",
+            }, function(error, response, body){
+                console.log(body);
+            })
+        })
+    })
 
 })
