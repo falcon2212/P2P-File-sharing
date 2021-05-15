@@ -69,31 +69,36 @@ describe("users api", function(){
     })
 
     describe("find user", function(){
-        var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725";
-
-        it("returns status 200", function(done){
+        
+        it("Invalid id", function(done){
+            var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609d427cab02bc002ba1e725";
             request({
                 url: url,
-                method: "POST",
+                method: "GET",
 
             }, function(error, response, body){
                 //console.log(body);
+                //console.log(response.statusCode);
                 expect(response.statusCode).to.equal(200);
                 done();
             })
         })
 
-        it("returns status 404", function(done){
+        
+        it("returns status 200", function(done){
+            var url = "https://backend-service-falcon2212.cloud.okteto.net/users/609fbeb03abf800041dc61fe";
+            //console.log(url)
             request({
                 url: url,
-                method: "POST",
+                method: "GET",
 
             }, function(error, response, body){
-                //console.log(body);
-                expect(response.statusCode).to.equal(404);
+                //console.log(response);
+                expect(response.statusCode).to.equal(200);
                 done();
             })
         })
+
     })
 
     describe("update devices", function(done){
@@ -110,6 +115,7 @@ describe("users api", function(){
                 json:true,
             },function(error, response, body){
                 //console.log(body);
+                //console.log(error)
                 expect(response.statusCode).to.equal(200);
             })
             done();
