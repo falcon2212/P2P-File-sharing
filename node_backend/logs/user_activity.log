@@ -6,3 +6,6 @@ POST /users/find 200 5.620 ms - {"username":"vemshari27","password":"123"} 262- 
 POST /users/update_devices/60a00366d5fe095c52b37fb0 200 11.800 ms - {"username":"vemshari27","devices":["laptop","mobile","ipad"]} 269- [15/May/2021:17:23:57 +0000]
 POST /users/find 200 5.650 ms - {"username":"vemshari27","password":"123"} 269- [15/May/2021:17:24:05 +0000]
 POST /users/update_devices/60a00366d5fe095c52b37fb0 200 13.374 ms - {"username":"vemshari27","devices":["laptop","mobile","ipad","pc"]} 274- [15/May/2021:17:24:09 +0000]
+POST /users/find 400 10156.565 ms - {"username":"vemshari27","password":"123"} 85- [16/May/2021:05:13:00 +0000]
+POST /users/find 200 36.878 ms - {"username":"vemshari27","password":"123"} 274- [16/May/2021:05:13:13 +0000]
+POST /users/find 200 12.769 ms - {"username":"vemshari27","password":"123"} 274- [16/May/2021:05:13:31 +0000]

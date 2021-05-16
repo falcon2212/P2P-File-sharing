@@ -60,19 +60,7 @@ class Header extends Component {
                         </LinkContainer>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav defaultActiveKey={"home"} className="mr-auto">
-                                <LinkContainer to={"/"}>
-                                    {/*<Nav.Link eventKey={"home"} onSelect={()=>this.props.onReq("home")}>Home</Nav.Link>*/}
-                                    <Nav.Link eventKey={"home"}>Home</Nav.Link>
-                                </LinkContainer>
-                                <LinkContainer to={"/about"}>
-                                    {/*<Nav.Link eventKey={"faq"} onSelect={()=>this.props.onReq("faq")}>FAQs</Nav.Link>*/}
-                                    <Nav.Link eventKey={"about"}>About</Nav.Link>
-                                </LinkContainer>
-                                <LinkContainer to={"/authors"}>
-                                    {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
-                                    <Nav.Link eventKey={"authors"}>Authors</Nav.Link>
-                                </LinkContainer>
+                            <Nav defaultActiveKey={"dashboard"} className="mr-auto">
                                 <LinkContainer to={"/dashboard"}>
                                     {/*<Nav.Link eventKey={"about"} onSelect={()=>this.props.onReq("about")}>Authors</Nav.Link>*/}
                                     <Nav.Link eventKey={"dashboard"}>Dashboard</Nav.Link>
@@ -83,8 +71,7 @@ class Header extends Component {
                                 title= {this.props.login_data.login_credentials.username}
                                 >
 
-                                    <NavDropdown.Item eventKey={1.1} href="#profile">Profile</NavDropdown.Item>
-                                    <NavDropdown.Item eventKey={1.2} href={"/"} onClick={()=>this.props.onReq("false",null)}>
+                                    <NavDropdown.Item eventKey={1.1} href={"/"} onClick={()=>this.props.onReq("false",null)}>
                                         Logout
                                     </NavDropdown.Item>
                                 </NavDropdown>
