@@ -21,22 +21,22 @@ var app = express();
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
 
-var accessLogStream = fs.createWriteStream(path.join(__dirname, '/logs/user_activity.log'), { flags: 'a' })
-logger.token('req_body', function (req, res){
-  return JSON.stringify(req.body);
-})
-logger.token('res_body', function (req, res) {
-  return JSON.stringify(res.body);
-})
-app.use(logger(":method :url :status :response-time ms - :req_body :res[content-length]- [:date[clf]]", {
-  skip: function (req, res){
-    return (req.originalUrl.startsWith('/start') || JSON.stringify(req.body) === '{}');
-  },
-  stream: accessLogStream
-}));
+// var accessLogStream = fs.createWriteStream(path.join(__dirname, '/logs/user_activity.log'), { flags: 'a' })
+// logger.token('req_body', function (req, res){
+//   return JSON.stringify(req.body);
+// })
+// logger.token('res_body', function (req, res) {
+//   return JSON.stringify(res.body);
+// })
+// app.use(logger(":method :url :status :response-time ms - :req_body :res[content-length]- [:date[clf]]", {
+//   skip: function (req, res){
+//     return (req.originalUrl.startsWith('/start') || JSON.stringify(req.body) === '{}');
+//   },
+//   stream: accessLogStream
+// }));
 // app.use(bodyParser.json());
 // morganBody(app);
-
+app.use(logger('dev'));
 
 
 
