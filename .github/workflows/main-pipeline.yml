@@ -20,6 +20,8 @@ jobs:
     - name: Build the application
       working-directory: ./react_frontend/
       run: npm run build --if-present
+      env:
+        CI: false
     - name: Test the application
       working-directory: ./node_backend/  
       run: npm test 
