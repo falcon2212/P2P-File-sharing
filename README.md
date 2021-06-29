@@ -1,5 +1,5 @@
-# Windrop
-- Current version of the app is just a file sharing app.
+# P2P File Sharing App
+- Current version of the app is a file sharing app.
 - The functionality is similar to Apple's Airdrop.
 ****
 
